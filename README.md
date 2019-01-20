@@ -1,2 +1,0 @@
-# GraduationProject
-Hamptonzhou's GraduationProject
