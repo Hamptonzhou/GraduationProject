@@ -1,10 +1,12 @@
-.DS_Store
-node_modules
-/dist
-
 /tests/e2e/videos/
 /tests/e2e/screenshots/
 
+build/env.js
+
+#使用vue-cli 3.x创建项目时，自动生成以下内容
+.DS_Store
+node_modules
+/dist
 # local env files
 .env.local
 .env.*.local
@@ -22,5 +24,3 @@ yarn-error.log*
 *.njsproj
 *.sln
 *.sw*
-
-build/env.js
