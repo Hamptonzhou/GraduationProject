@@ -33,12 +33,16 @@ export default {
   buttonText: '顯示模態框',
   'i18n-tip': '注：僅此頁做了多語言，其他頁面沒有在多語言包中添加語言內容',
   error_store_page: '錯誤收集',
-  error_logger_page: '日誌收集',
+
   query: '帶參路由',
   params: '動態路由',
   cropper_page: '圖片裁剪',
   message_page: '消息中心',
   tree_table_page: '樹狀表格',
   org_tree_page: '組織結構樹',
-  drag_drawer_page: '可拖動抽屜'
+  drag_drawer_page: '可拖動抽屜',
+
+  // 毕设开发
+  logCollection_page: '日誌收集',
+
 }

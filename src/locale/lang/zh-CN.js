@@ -23,5 +23,5 @@ export default {
 
 
   // 毕设开发
-  error_logger_page: '日志收集',
+  logCollection_page: '日志收集',
 }

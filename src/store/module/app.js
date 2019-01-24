@@ -108,7 +108,7 @@ export default {
       commit,
       rootState
     }, info) {
-      if (!window.location.href.includes('error_logger_page')) commit('setHasReadErrorLoggerStatus', false)
+      if (!window.location.href.includes('logCollection_page')) commit('setHasReadErrorLoggerStatus', false)
       const {
         user: {
           token,

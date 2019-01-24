@@ -179,22 +179,22 @@ export default [{
 
   // ################################################################毕设开发################################################################
   {
-    path: '/error_logger',
-    name: 'error_logger',
+    path: '/log',
+    name: 'log',
     meta: {
       hideInBread: true,
       hideInMenu: false
     },
     component: Main,
     children: [{
-      path: 'error_logger_page',
-      name: 'error_logger_page',
+      path: 'logCollection_page',
+      name: 'logCollection_page',
       meta: {
         icon: 'ios-bug',
         title: '日志收集',
         beforeCloseName: 'before_close_normal'
       },
-      component: () => import('@/view/single-page/error-logger.vue')
+      component: () => import('@/view/single-page/logCollection_page.vue')
     }]
   },
   {

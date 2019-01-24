@@ -9,6 +9,15 @@
         style="width: 200px"
         @on-change="handleChange"
       ></DatePicker>
+      <Input
+        v-model="keyword"
+        @on-change="searchByKeyword"
+        clearable
+        search
+        enter-button
+        placeholder="操作用户或方法名"
+        style="width: 300px"
+      />
     </div>
     <Table border stripe @on-row-click="getRowClick" ref="table" :columns="columns" :data="logList"></Table>
     <Page
@@ -27,7 +36,7 @@ import logCollectionApi from "@/api/LogCollection.js";
 import axios from "axios";
 
 export default {
-  name: "error_logger_page",
+  name: "logCollection_page",
   data() {
     return {
       columns: [
@@ -86,7 +95,8 @@ export default {
       currentPage: 1,
       pageSize: 20,
       startDate: null,
-      endDate: null
+      endDate: null,
+      keyword: null
     };
   },
   mounted() {
@@ -101,43 +111,46 @@ export default {
             page: this.currentPage,
             rows: this.pageSize,
             startDate: this.startDate,
-            endDate: this.endDate
+            endDate: this.endDate,
+            keyword: this.keyword
           }
         })
         .then(res => {
           if (res.data.status === 0) {
             this.logList = res.data.data.rows;
             this.total = res.data.data.total;
+          } else {
+            alert("无法获取列表");
           }
+        })
+        .catch(err => {
+          alert("无法获取列表");
         });
     },
+    //双击时，显示详细信息
     getRowClick(rowData) {
       alert(rowData);
     },
-
+    //搜索框内容变化时，立即调用搜索
+    searchByKeyword() {
+      this.getLogList();
+    },
     //日期选择框变化时，触发@on-change后调用该函数，进行日期设置
     handleChange(date) {
       this.startDate = date[0];
       this.endDate = date[1];
-      console.log(this.startDate);
-      console.log(this.endDate);
+      this.getLogList();
     },
-    //
+    //修改页码
     getCurrentPage(currentPage) {
       this.currentPage = currentPage;
-      console.log(this.currentPage);
-      if (this.logList !== null) {
-        this.getLogList();
-      }
+      this.getLogList();
     },
+    //修改每页显示的条数
     getPageSize(pageSize) {
       this.pageSize = pageSize;
-      console.log(this.pageSize);
-      if (this.logList !== null) {
-        this.getLogList();
-      }
+      this.getLogList();
     },
-
     //导出csv文件
     exportData() {
       this.$refs.table.exportCsv({
