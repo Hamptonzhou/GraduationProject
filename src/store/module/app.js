@@ -35,16 +35,7 @@ export default {
     tagNavList: [],
     homeRoute: {},
     local: localRead('local'),
-    errorList: [{
-      "realName": "周海鹏",
-      "date": "2019-01-15 21:19:36",
-      "method": "com.zhou.controller.TestControllerSaveLog.testController",
-      "parameter": "(java.lang.String):\"你好\"(java.lang.Integer):123java.lang.reflect.Array:[(java.lang.String):\"aaa\"]",
-      "clientIp": "47.106.196.105",
-      "requestUri": "http://localhost:9600/TestControllerSaveLog/getAllCodeDict",
-      "executionTime": "7",
-      // "description" : "请求路径 ：http://localhost:9600/TestControllerSaveLog/getAllCodeDict"
-    }],
+    errorList: [],
     hasReadErrorPage: false
   },
   getters: {

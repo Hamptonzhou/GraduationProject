@@ -15,7 +15,7 @@ let cancel
 const config = {
 
   // 请求后台接口的基础路径
-  baseUrl = 'http://localhost:9600',
+  baseUrl: 'http://localhost:9600',
 
   /**
    * get获取数据，通用方法
@@ -37,6 +37,7 @@ const config = {
           cancel = c
         })
       }).then(response => {
+        //返回res.data处理，否则在API获取数据的时候，需要按照res.data.data获取
         resolve(response.data)
       }).catch(response => {
         // console.error('ajax error:', response)
