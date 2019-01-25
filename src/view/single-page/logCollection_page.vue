@@ -1,25 +1,34 @@
 <template>
   <div>
-    <div>
-      <Button @click="exportData" type="primary" style="margin: 0 10px 10px 0;">导出日志记录</Button>
-      <DatePicker
-        type="daterange"
-        split-panels
-        placeholder="筛选日期"
-        style="width: 200px"
-        @on-change="handleChange"
-      ></DatePicker>
-      <Input
-        v-model="keyword"
-        @on-change="searchByKeyword"
-        clearable
-        search
-        enter-button
-        placeholder="操作用户或方法名"
-        style="width: 300px"
-      />
-      <Icon type="md-refresh" size="20" @click="getLogList"/>
-    </div>
+    <Form inline>
+      <FormItem>
+        <Button @click="exportData" type="primary" style="margin: 0 10px 10px 0;">导出日志记录</Button>
+      </FormItem>
+      <FormItem>
+        <DatePicker
+          type="daterange"
+          split-panels
+          placeholder="筛选日期"
+          style="width: 200px"
+          @on-change="handleChange"
+        ></DatePicker>
+      </FormItem>
+      <FormItem>
+        <Input
+          v-model="keyword"
+          @on-change="searchByKeyword"
+          clearable
+          search
+          enter-button
+          placeholder="操作用户或方法名"
+          style="width: 300px"
+        />
+      </FormItem>
+      <FormItem>
+        <Button shape="circle" icon="md-refresh" @click="getLogList"></Button>
+      </FormItem>
+    </Form>
+
     <Table
       border
       stripe
@@ -195,5 +204,8 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
+.ivu-btn {
+  border-color: #fff;
+}
 </style>
