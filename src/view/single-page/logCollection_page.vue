@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="form-inline">
+    <div>
       <Button @click="exportData" type="primary" style="margin: 0 10px 10px 0;">导出日志记录</Button>
       <DatePicker
         type="daterange"
@@ -18,28 +18,53 @@
         placeholder="操作用户或方法名"
         style="width: 300px"
       />
+      <Icon type="md-refresh" size="20" @click="getLogList"/>
     </div>
-    <Table border stripe @on-row-click="getRowClick" ref="table" :columns="columns" :data="logList"></Table>
+    <Table
+      border
+      stripe
+      :loading="isloading"
+      @on-row-dblclick="getRowClick"
+      ref="table"
+      :columns="columns"
+      :data="logList"
+    ></Table>
     <Page
       :total="total"
       show-elevator
       show-sizer
       show-total
+      :page-size="50"
+      :page-size-opts="[30, 50, 100]"
       @on-change="getCurrentPage"
       @on-page-size-change="getPageSize"
     />
+    <Modal v-model="isShow" title="日志详情">
+      <div>操作用户：{{ LogDetail.realName}}</div>
+      <div>用户ID：{{ LogDetail.userId}}</div>
+      <div>客户端IP：{{ LogDetail.clientIp}}</div>
+      <div>请求地址：{{ LogDetail.requestUri}}</div>
+      <div>操作方法：{{ LogDetail.method}}</div>
+      <div>方法参数：{{ LogDetail.parameter}}</div>
+      <div>请求耗时：{{ LogDetail.executionTime}}</div>
+      <div>请求时间：{{ LogDetail.date}}</div>
+    </Modal>
   </div>
 </template>
 
 <script>
 import logCollectionApi from "@/api/LogCollection.js";
-import axios from "axios";
 
 export default {
   name: "logCollection_page",
   data() {
     return {
       columns: [
+        {
+          type: "index",
+          width: 60,
+          align: "center"
+        },
         {
           key: "realName",
           title: "操作用户",
@@ -90,48 +115,57 @@ export default {
           width: 150
         }
       ],
+      isloading: false,
       logList: [],
       total: null,
       currentPage: 1,
-      pageSize: 20,
+      pageSize: 50,
       startDate: null,
       endDate: null,
-      keyword: null
+      keyword: null,
+      isShow: false,
+      LogDetail: {}
     };
   },
   mounted() {
+    this.isloading = true;
     this.getLogList();
   },
 
   methods: {
     getLogList: function() {
-      axios
-        .get("http://localhost:9600/LogAnalyseController/getOperationLogList", {
-          params: {
-            page: this.currentPage,
-            rows: this.pageSize,
-            startDate: this.startDate,
-            endDate: this.endDate,
-            keyword: this.keyword
-          }
-        })
+      this.isloading = true;
+      logCollectionApi
+        .getOperationLogList(
+          this.currentPage,
+          this.pageSize,
+          this.startDate,
+          this.endDate,
+          this.keyword
+        )
         .then(res => {
-          if (res.data.status === 0) {
-            this.logList = res.data.data.rows;
-            this.total = res.data.data.total;
+          this.isloading = false;
+          if (res.status === 0) {
+            this.logList = res.data.rows;
+            this.total = res.data.total;
           } else {
-            alert("无法获取列表");
+            this.isloading = false;
+            console.log("else-无法获取列表");
           }
         })
         .catch(err => {
-          alert("无法获取列表");
+          this.isloading = false;
+          console.log("catch-无法获取列表");
         });
     },
+
     //双击时，显示详细信息
     getRowClick(rowData) {
-      alert(rowData);
+      this.isShow = true;
+      this.LogDetail = rowData;
+      console.log(rowData);
     },
-    //搜索框内容变化时，立即调用搜索
+    //搜索框内容变化时，根据关键字立即调用搜索
     searchByKeyword() {
       this.getLogList();
     },
