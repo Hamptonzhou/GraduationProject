@@ -11,7 +11,6 @@ export default {
   excel: 'Excel',
   'upload-excel': '上传excel',
   'export-excel': '导出excel',
-  i18n_page: '多语言',
   modalTitle: '模态框题目',
   content: '这是模态框内容',
   buttonText: '显示模态框',
@@ -24,4 +23,5 @@ export default {
 
   // 毕设开发
   logCollection_page: '日志收集',
+  organization_page: '组织机构系统'
 }

@@ -27,7 +27,6 @@ export default {
   'export-excel': '導出excel',
   tools_methods_page: '工具函數',
   drag_list_page: '拖拽列表',
-  i18n_page: '多語言',
   modalTitle: '模態框題目',
   content: '這是模態框內容',
   buttonText: '顯示模態框',
@@ -44,5 +43,6 @@ export default {
 
   // 毕设开发
   logCollection_page: '日誌收集',
+  organization_page: '組織結構系统'
 
 }

@@ -129,24 +129,6 @@ export default [{
     }]
   },
   {
-    path: '/i18n',
-    name: 'i18n',
-    meta: {
-      hideInBread: true
-    },
-    component: Main,
-    children: [{
-      path: 'i18n_page',
-      name: 'i18n_page',
-      meta: {
-        icon: 'md-planet',
-        title: 'i18n - {{ i18n_page }}'
-      },
-      component: () => import('@/view/i18n/i18n-page.vue')
-    }]
-  },
-
-  {
     path: '/argu',
     name: 'argu',
     meta: {
@@ -176,27 +158,6 @@ export default [{
       }
     ]
   },
-
-  // ################################################################毕设开发################################################################
-  {
-    path: '/log',
-    name: 'log',
-    meta: {
-      hideInBread: true,
-      hideInMenu: false
-    },
-    component: Main,
-    children: [{
-      path: 'logCollection_page',
-      name: 'logCollection_page',
-      meta: {
-        icon: 'ios-bug',
-        title: '日志收集',
-        beforeCloseName: 'before_close_normal'
-      },
-      component: () => import('@/view/single-page/logCollection_page.vue')
-    }]
-  },
   {
     path: '/401',
     name: 'error_401',
@@ -220,5 +181,48 @@ export default [{
       hideInMenu: true
     },
     component: () => import('@/view/error-page/404.vue')
-  }
+  },
+
+
+  // ################################################################毕设开发################################################################
+  {
+    path: '/log',
+    name: 'log',
+    meta: {
+      hideInBread: true,
+      hideInMenu: false
+    },
+    component: Main,
+    children: [{
+      path: 'logCollection_page',
+      name: 'logCollection_page',
+      meta: {
+        icon: 'ios-bug',
+        title: '日志收集',
+        beforeCloseName: 'before_close_normal'
+      },
+      component: () => import('@/view/single-page/logCollection_page.vue')
+    }]
+  },
+
+  {
+    path: '/organization',
+    name: 'organization',
+    meta: {
+      hideInBread: true
+    },
+    component: Main,
+    children: [{
+      path: 'organization_page',
+      name: 'organization_page',
+      meta: {
+        icon: 'md-planet',
+        title: ' {{ organization_page }}'
+      },
+      component: () => import('@/view/organization/organization_page.vue')
+    }]
+  },
+
+
+
 ]

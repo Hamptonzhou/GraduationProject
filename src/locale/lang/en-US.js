@@ -27,7 +27,7 @@ export default {
   'export-excel': 'Export Excel',
   tools_methods_page: 'Tools Methods',
   drag_list_page: 'Drag-list',
-  i18n_page: 'Internationalization',
+  
   modalTitle: 'Modal Title',
   content: 'This is the modal box content.',
   buttonText: 'Show Modal',
@@ -44,4 +44,5 @@ export default {
 
   //毕设开发
   logCollection_page: 'Logger Collection',
+  organization_page: 'Organization System',
 }
