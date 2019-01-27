@@ -10,7 +10,14 @@ export default {
   },
   //新增或修改员工信息
   saveOrUpdateUser(UserInfo) {
-    console.log("js" + UserInfo)
     return config.doPostPromise(baseUrl + '/UserController/saveOrUpdateUser', UserInfo)
+  },
+  // 新增或修改部门或岗位的信息
+  saveOrUpdateDepartment(DepartmentInfo) {
+    return config.doPostPromise(baseUrl + '/DepartmentController/saveOrUpdateDepartment', DepartmentInfo)
+  },
+  // 获取所有部门名称的列表
+  getDepartmentList() {
+    return config.doGetPromise(baseUrl + '/DepartmentController/getDepartmentList')
   }
 }
