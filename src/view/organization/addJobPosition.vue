@@ -90,10 +90,10 @@ export default {
     this.getDepartmentList();
   },
   methods: {
-    //获取所有部门名称
+    //获取所有部门列表
     getDepartmentList() {
       organizationAPI
-        .getDepartmentList()
+        .getDepartmentList("#")
         .then(res => {
           if (res.status === 0) {
             this.departmentList = res.data;

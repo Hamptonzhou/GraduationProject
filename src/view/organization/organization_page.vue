@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="split">
-      <Split v-model="split1" mode="horizontal">
+      <Split v-model="split" mode="horizontal">
         <div slot="left" class="split-pane">
           <organization-tree></organization-tree>
         </div>
@@ -37,7 +37,7 @@ export default {
   },
   data() {
     return {
-      split1: 0.15,
+      split: 0.15,
       changeComponent: "addDepartment"
     };
   }

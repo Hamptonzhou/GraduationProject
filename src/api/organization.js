@@ -17,7 +17,9 @@ export default {
     return config.doPostPromise(baseUrl + '/DepartmentController/saveOrUpdateDepartment', DepartmentInfo)
   },
   // 获取所有部门名称的列表
-  getDepartmentList() {
-    return config.doGetPromise(baseUrl + '/DepartmentController/getDepartmentList')
+  getDepartmentList(parentId) {
+    return config.doGetPromise(baseUrl + '/DepartmentController/getDepartmentList', {
+      parentId: parentId
+    })
   }
 }
