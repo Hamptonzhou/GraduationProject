@@ -23,5 +23,6 @@ export default {
 
   // 毕设开发
   logCollection_page: '日志收集',
-  organization_page: '组织机构系统'
+  organization_page: '组织机构系统',
+  formDesigner_page: '表单设计器'
 }

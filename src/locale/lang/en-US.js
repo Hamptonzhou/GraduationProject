@@ -45,4 +45,5 @@ export default {
   //毕设开发
   logCollection_page: 'Logger Collection',
   organization_page: 'Organization System',
+  formDesigner_page: 'Form Designer'
 }
