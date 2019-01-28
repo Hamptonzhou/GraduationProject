@@ -111,21 +111,21 @@ export default [{
     ]
   },
   {
-    path: '/excel',
-    name: 'excel',
+    path: '/formDesigner',
+    name: 'formDesigner',
     meta: {
       icon: 'ios-stats',
-      title: 'EXCEL导入导出'
+      title: '表单设计器'
     },
     component: Main,
     children: [{
-      path: 'export-excel',
-      name: 'export-excel',
+      path: 'formDesigner_page',
+      name: 'formDesigner_page',
       meta: {
         icon: 'md-download',
-        title: '导出EXCEL'
+        title: '表单设计器'
       },
-      component: () => import('@/view/excel/export-excel.vue')
+      component: () => import('@/view/formDesigner/formDesigner_page.vue')
     }]
   },
   {
