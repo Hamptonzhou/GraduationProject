@@ -21,5 +21,9 @@ export default {
     return config.doGetPromise(baseUrl + '/DepartmentController/getDepartmentList', {
       parentId: parentId
     })
+  },
+  // 获取组织结构树
+  getDepartmentTree() {
+    return config.doGetPromise(baseUrl + '/DepartmentController/getDepartmentTree')
   }
 }
