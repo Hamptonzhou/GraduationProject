@@ -4,6 +4,7 @@ import {
 } from '@/libs/util'
 const Random = Mock.Random
 
+//多功能表格数据
 export const getTableData = req => {
   let tableData = []
   doCustomTimes(5, () => {
@@ -14,19 +15,4 @@ export const getTableData = req => {
     }))
   })
   return tableData
-}
-
-export const getDragList = req => {
-  let dragList = []
-  doCustomTimes(5, () => {
-    dragList.push(Mock.mock({
-      name: Random.csentence(10, 13),
-      id: Random.increment(10)
-    }))
-  })
-  return dragList
-}
-
-export const uploadImage = req => {
-  return Promise.resolve()
 }

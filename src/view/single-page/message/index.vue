@@ -11,14 +11,14 @@
             <span class="category-title">已读消息</span>
             <Badge style="margin-left: 10px" class-name="gray-dadge" :count="messageReadedCount"></Badge>
           </MenuItem>
-          <MenuItem name="broadcast">
+          <!-- <MenuItem name="broadcast">
             <span class="category-title">广播消息</span>
             <Badge style="margin-left: 10px" class-name="gray-dadge" :count="broadcastCount"></Badge>
           </MenuItem>
           <MenuItem name="sended">
             <span class="category-title">已发消息</span>
             <Badge style="margin-left: 10px" class-name="gray-dadge" :count="sengedMessageCount"></Badge>
-          </MenuItem>
+          </MenuItem>-->
           <MenuItem name="trash">
             <span class="category-title">回收站</span>
             <Badge style="margin-left: 10px" class-name="gray-dadge" :count="messageTrashCount"></Badge>
@@ -60,7 +60,8 @@
 </template>
 
 <script>
-import { mapState, mapGetters, mapMutations, mapActions } from "vuex";
+// 从vuex维护的store文件夹中获取对应的state、mutations、getters、actions，注意：这几个对象分别在vue实例的computed、methods中使用
+import { mapState, mapGetters, mapMutations, mapActions } from 'vuex'
 const listDic = {
   unread: "messageUnreadList",
   readed: "messageReadedList",
@@ -92,6 +93,7 @@ export default {
       }
     }),
     ...mapGetters([
+      //需要获取未读的消息数量，不在这里进行直接调用后端api，而是从vuex的存储中去查找(vuex维护详细相关的组件在stroe文件夹下的user.js)by zhou
       "messageUnreadCount",
       "messageReadedCount",
       "messageTrashCount"

@@ -1,8 +1,12 @@
 import Mock from 'mockjs'
-import { doCustomTimes } from '@/libs/util'
+import {
+  doCustomTimes
+} from '@/libs/util'
 const Random = Mock.Random
 
 export const getMessageInit = () => {
+
+  //消息页面的mock数据来源于此
   let unreadList = []
   doCustomTimes(3, () => {
     unreadList.push(Mock.mock({
@@ -50,6 +54,7 @@ export const restoreTrash = () => {
   return true
 }
 
+//mock指定调用的方法，返回数据
 export const messageCount = () => {
   return 3
 }

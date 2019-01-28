@@ -1,6 +1,9 @@
 import axios from '@/libs/api.request'
 
-export const login = ({ userName, password }) => {
+export const login = ({
+  userName,
+  password
+}) => {
   const data = {
     userName,
     password
@@ -29,6 +32,7 @@ export const logout = (token) => {
   })
 }
 
+//在这里修改，请求真实的后端消息模块的接口？？？by zhou
 export const getUnreadCount = () => {
   return axios.request({
     url: 'message/count',

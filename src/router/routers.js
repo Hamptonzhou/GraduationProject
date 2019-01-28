@@ -73,26 +73,15 @@ export default [{
       title: '组件'
     },
     component: Main,
-    children: [
-      // {
-      //     path: 'org_tree_page',
-      //     name: 'org_tree_page',
-      //     meta: {
-      //       icon: 'ios-people',
-      //       title: '组织结构树'
-      //     },
-      //     component: () => import('@/view/components/org-tree')
-      //   },
-      {
-        path: 'tables_page',
-        name: 'tables_page',
-        meta: {
-          icon: 'md-grid',
-          title: '多功能表格'
-        },
-        component: () => import('@/view/components/tables/tables.vue')
+    children: [{
+      path: 'tables_page',
+      name: 'tables_page',
+      meta: {
+        icon: 'md-grid',
+        title: '多功能表格'
       },
-    ]
+      component: () => import('@/view/components/tables/tables.vue')
+    }, ]
   },
 
   {
