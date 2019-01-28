@@ -198,104 +198,112 @@ export default {
         userDescription: ""
       },
       rulePeopleForm: {
-        // loginName: [
-        //   {
-        //     validator: validateloginName,
-        //     trigger: "blur"
-        //   }
-        // ]
-        // userPassword: [
-        //   {
-        //     required: true,
-        //     message: "密码不能为空",
-        //     trigger: "blur"
-        //   }
-        // ],
-        // confirmPassword: [
-        //   {
-        //     validator: validatePassword,
-        //     trigger: "blur"
-        //   }
-        // ],
-        //   realName: [
-        //     {
-        //       required: true,
-        //       message: "请输入真实姓名",
-        //       trigger: "blur"
-        //     }
-        //   ],
-        //   jobNumber: [
-        //     {
-        //       required: true,
-        //       message: "请确认工号",
-        //       trigger: "blur"
-        //     }
-        //   ],
-        //   identityNumber: [
-        //     {
-        //       required: true,
-        //       message: "请输入身份证号码",
-        //       trigger: "blur"
-        //     }
-        //   ],
-        //   phone: [
-        //     {
-        //       required: true,
-        //       message: "请输入手机号码",
-        //       trigger: "blur"
-        //     }
-        //   ],
-        //   address: [
-        //     {
-        //       required: true,
-        //       message: "请输入住址",
-        //       trigger: "blur"
-        //     }
-        //   ],
-        //   ethnicity: [
-        //     {
-        //       required: true,
-        //       message: "请填写民族",
-        //       trigger: "blur"
-        //     }
-        //   ],
-        //   education: [
-        //     {
-        //       required: true,
-        //       message: "请输入学历",
-        //       trigger: "blur"
-        //     }
-        //   ],
-        //   jobPosition: [
-        //     {
-        //       required: true,
-        //       message: "请选择岗位",
-        //       trigger: "blur"
-        //     }
-        //   ],
-        //   parentId: [
-        //     {
-        //       required: true,
-        //       message: "请选择所属部门",
-        //       trigger: "blur"
-        //     }
-        //   ],
-        //   email: [{ type: "email", message: "邮箱格式不正确", trigger: "blur" }],
-        //   gender: [{ required: true, message: "请选择性别", trigger: "change" }],
-        // registerTime: {
-        //   required: true,
-        //   type: "date",
-        //   message: "请选择注册时间",
-        //   trigger: "change"
-        // },
-        // joinTime: [
-        //   {
-        //     required: true,
-        //     type: "date",
-        //     message: "请选择入职时间",
-        //     trigger: "change"
-        //   }
-        // ]
+        loginName: [
+          {
+            required: true,
+            validator: validateloginName,
+            trigger: "blur"
+          }
+        ],
+        userPassword: [
+          {
+            required: true,
+            message: "密码不能为空",
+            trigger: "blur"
+          }
+        ],
+        confirmPassword: [
+          {
+            required: true,
+            validator: validatePassword,
+            trigger: "blur"
+          }
+        ],
+        realName: [
+          {
+            required: true,
+            message: "请输入真实姓名",
+            trigger: "blur"
+          }
+        ],
+        jobNumber: [
+          {
+            required: true,
+            message: "请确认工号",
+            trigger: "blur"
+          }
+        ],
+        identityNumber: [
+          {
+            required: true,
+            message: "请输入身份证号码",
+            trigger: "blur"
+          }
+        ],
+        phone: [
+          {
+            required: true,
+            message: "请输入手机号码",
+            trigger: "blur"
+          }
+        ],
+        address: [
+          {
+            message: "请输入住址",
+            trigger: "blur"
+          }
+        ],
+        ethnicity: [
+          {
+            required: true,
+            message: "请填写民族",
+            trigger: "blur"
+          }
+        ],
+        education: [
+          {
+            required: true,
+            message: "请输入学历",
+            trigger: "blur"
+          }
+        ],
+        jobPosition: [
+          {
+            required: true,
+            message: "请选择岗位",
+            trigger: "blur"
+          }
+        ],
+        parentId: [
+          {
+            required: true,
+            message: "请选择所属部门",
+            trigger: "blur"
+          }
+        ],
+        email: [
+          {
+            required: true,
+            type: "email",
+            message: "邮箱格式不正确",
+            trigger: "blur"
+          }
+        ],
+        gender: [{ required: true, message: "请选择性别", trigger: "change" }],
+        registerTime: {
+          required: true,
+          type: "date",
+          message: "请选择注册时间",
+          trigger: "change"
+        },
+        joinTime: [
+          {
+            required: true,
+            type: "date",
+            message: "请选择入职时间",
+            trigger: "change"
+          }
+        ]
       }
     };
   },
