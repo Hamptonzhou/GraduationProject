@@ -33,7 +33,7 @@ export default [{
     component: Main,
     meta: {
       hideInMenu: true,
-      notCache: true
+      // notCache: true
     },
     children: [{
       path: '/home',
@@ -41,7 +41,7 @@ export default [{
       meta: {
         hideInMenu: true,
         title: '首页',
-        notCache: true,
+        // notCache: true,
         icon: 'md-home'
       },
       component: () => import('@/view/single-page/home')
@@ -64,24 +64,7 @@ export default [{
       component: () => import('@/view/join-page.vue')
     }]
   },
-  {
-    path: '/message',
-    name: 'message',
-    component: Main,
-    meta: {
-      hideInBread: true,
-      hideInMenu: false
-    },
-    children: [{
-      path: 'message_page',
-      name: 'message_page',
-      meta: {
-        icon: 'md-notifications',
-        title: '消息中心'
-      },
-      component: () => import('@/view/single-page/message/index.vue')
-    }]
-  },
+
   {
     path: '/components',
     name: 'components',
@@ -110,24 +93,7 @@ export default [{
       },
     ]
   },
-  {
-    path: '/formDesigner',
-    name: 'formDesigner',
-    meta: {
-      icon: 'ios-stats',
-      title: '表单设计器'
-    },
-    component: Main,
-    children: [{
-      path: 'formDesigner_page',
-      name: 'formDesigner_page',
-      meta: {
-        icon: 'md-download',
-        title: '表单设计器'
-      },
-      component: () => import('@/view/formDesigner/formDesigner_page.vue')
-    }]
-  },
+
   {
     path: '/401',
     name: 'error_401',
@@ -178,10 +144,10 @@ export default [{
   {
     path: '/organization',
     name: 'organization',
+    component: Main,
     meta: {
       hideInBread: true
     },
-    component: Main,
     children: [{
       path: 'organization_page',
       name: 'organization_page',
@@ -192,7 +158,39 @@ export default [{
       component: () => import('@/view/organization/organization_page.vue')
     }]
   },
-
-
-
+  {
+    path: '/message',
+    name: 'message',
+    component: Main,
+    meta: {
+      hideInBread: true,
+      hideInMenu: false
+    },
+    children: [{
+      path: 'message_page',
+      name: 'message_page',
+      meta: {
+        icon: 'md-notifications',
+        title: '消息中心'
+      },
+      component: () => import('@/view/single-page/message/index.vue')
+    }]
+  },
+  {
+    path: '/formDesigner',
+    name: 'formDesigner',
+    meta: {
+      title: '表单设计器'
+    },
+    component: Main,
+    children: [{
+      path: 'formDesigner_page',
+      name: 'formDesigner_page',
+      meta: {
+        icon: 'md-grid',
+        title: '表单设计器'
+      },
+      component: () => import('@/view/formDesigner/formDesigner_page.vue')
+    }]
+  },
 ]
