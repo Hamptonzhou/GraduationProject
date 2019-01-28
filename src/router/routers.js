@@ -70,7 +70,7 @@ export default [{
     component: Main,
     meta: {
       hideInBread: true,
-      hideInMenu: true
+      hideInMenu: false
     },
     children: [{
       path: 'message_page',
@@ -127,36 +127,6 @@ export default [{
       },
       component: () => import('@/view/excel/export-excel.vue')
     }]
-  },
-  {
-    path: '/argu',
-    name: 'argu',
-    meta: {
-      hideInMenu: true
-    },
-    component: Main,
-    children: [{
-        path: 'params/:id',
-        name: 'params',
-        meta: {
-          icon: 'md-flower',
-          title: route => `{{ params }}-${route.params.id}`,
-          notCache: true,
-          beforeCloseName: 'before_close_normal'
-        },
-        component: () => import('@/view/argu-page/params.vue')
-      },
-      {
-        path: 'query',
-        name: 'query',
-        meta: {
-          icon: 'md-flower',
-          title: route => `{{ query }}-${route.query.id}`,
-          notCache: true
-        },
-        component: () => import('@/view/argu-page/query.vue')
-      }
-    ]
   },
   {
     path: '/401',
