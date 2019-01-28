@@ -1,6 +1,7 @@
 import Mock from 'mockjs'
-import { doCustomTimes } from '@/libs/util'
-import orgData from './data/org-data'
+import {
+  doCustomTimes
+} from '@/libs/util'
 const Random = Mock.Random
 
 export const getTableData = req => {
@@ -28,8 +29,4 @@ export const getDragList = req => {
 
 export const uploadImage = req => {
   return Promise.resolve()
-}
-
-export const getOrgData = req => {
-  return orgData
 }
