@@ -2,6 +2,7 @@
   <Tree
     :data="departmentList"
     :load-data="loadChildren"
+    :empty-text="'aa'"
     @on-select-change="getCurrentTreeNodePeople"
   ></Tree>
 </template>
@@ -25,7 +26,6 @@ export default {
   methods: {
     // item 当前节点的信息
     loadChildren(item, callback) {
-      console.log(item);
       if (this.parentId === null) {
         this.parentId = "#";
       } else {
@@ -37,17 +37,19 @@ export default {
         .then(res => {
           if (res.status === 0) {
             var list = res.data;
-            console.log(list);
             list.forEach(department => {
               const oneDepartment = {
-                title: department.departmentName,
+                title:
+                  department.departmentName == null
+                    ? department.jobPositionName
+                    : department.departmentName,
                 loading: false,
                 children: [],
                 departmentId: department.id
               };
               this.newList.push(oneDepartment);
             });
-            console.log(this.newList);
+            // console.log(this.newList);
             callback(this.newList);
             //清空数组
             this.newList = [];
@@ -56,23 +58,6 @@ export default {
           }
         })
         .catch("catch-请求获取部门列表失败");
-
-      // 模拟异步请求
-      //   setTimeout(() => {
-      //     const data = [
-      //       {
-      //         title: "子级1",
-      //         loading: false,
-      //         children: []
-      //       },
-      //       {
-      //         title: "子级2",
-      //         loading: false,
-      //         children: []
-      //       }
-      //     ];
-      //     callback(data);
-      //   }, 200);
     },
 
     // 点击时，根据点击的树节点的parentId去获取当前树节点的所有用户，在右边用卡片显示
