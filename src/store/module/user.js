@@ -2,14 +2,17 @@ import {
   login,
   logout,
   getUserInfo,
+
   getMessage,
   getContentByMsgId,
   hasRead,
   removeReaded,
   restoreTrash,
-  getUnreadCount
+  // getUnreadCount
 } from '@/api/user'
 import { setToken, getToken } from '@/libs/util'
+
+import messageApi from "@/api/message.js";
 
 export default {
   state: {
@@ -45,12 +48,6 @@ export default {
     setHasGetInfo (state, status) {
       state.hasGetInfo = status
     },
-    setMessageCount (state, count) {
-      state.unreadCount = count
-    },
-    setMessageUnreadList (state, list) {
-      state.messageUnreadList = list
-    },
     setMessageReadedList (state, list) {
       state.messageReadedList = list
     },
@@ -65,7 +62,14 @@ export default {
       const msgItem = state[from].splice(index, 1)[0]
       msgItem.loading = false
       state[to].unshift(msgItem)
-    }
+    },
+
+    setMessageUnreadList (state, list) {
+      state.messageUnreadList = list
+    },
+    setMessageCount (state, count) {
+      state.unreadCount = count
+    },
   },
   getters: {
     messageUnreadCount: state => state.messageUnreadList.length,
@@ -73,76 +77,33 @@ export default {
     messageTrashCount: state => state.messageTrashList.length
   },
   actions: {
-    // 登录
-    handleLogin ({ commit }, {userName, password}) {
-      userName = userName.trim()
-      return new Promise((resolve, reject) => {
-        login({
-          userName,
-          password
-        }).then(res => {
-          const data = res.data
-          commit('setToken', data.token)
-          resolve()
-        }).catch(err => {
-          reject(err)
-        })
-      })
-    },
-    // 退出登录
-    handleLogOut ({ state, commit }) {
-      return new Promise((resolve, reject) => {
-        logout(state.token).then(() => {
-          commit('setToken', '')
-          commit('setAccess', [])
-          resolve()
-        }).catch(err => {
-          reject(err)
-        })
-        // 如果你的退出登录无需请求接口，则可以直接使用下面三行代码而无需使用logout调用接口
-        // commit('setToken', '')
-        // commit('setAccess', [])
-        // resolve()
-      })
-    },
-    // 获取用户相关信息
-    getUserInfo ({ state, commit }) {
-      return new Promise((resolve, reject) => {
-        try {
-          getUserInfo(state.token).then(res => {
-            const data = res.data
-            commit('setAvator', data.avator)
-            commit('setUserName', data.name)
-            commit('setUserId', data.user_id)
-            commit('setAccess', data.access)
-            commit('setHasGetInfo', true)
-            resolve(data)
-          }).catch(err => {
-            reject(err)
-          })
-        } catch (error) {
-          reject(error)
-        }
-      })
-    },
+    // 未使用，页面上的未读条数是通过getters中的messageUnreadCount获取的。分析错误！
+    // 浏览器上报错找不到该定义，说明该方法被某个文件引用了。细查可知：在main.vue中引用。在头像下拉中显示的是改未读消息的数量。
+    // 好处：打开首页可知未读数量，但是并未加载未读、已读、回收站的实体列表。仅当打开消息中心时，才进行加载实体。
+
     // 此方法用来获取未读消息条数，接口只返回数值，不返回消息列表
     getUnreadMessageCount ({ state, commit }) {
-      getUnreadCount().then(res => {
-        const { data } = res
-        commit('setMessageCount', data)
+      // getUnreadCount().then(res => {
+        messageApi.countUnreadMessage().then(res => {
+        // const { data } = 
+        commit('setMessageCount', res.data)
       })
     },
-    // 获取消息列表，其中包含未读、已读、回收站三个列表
+    // 初始化时，立刻被调用。获取了三种消息的列表实体，其中包含未读、已读、回收站三个列表
     getMessageList ({ state, commit }) {
       return new Promise((resolve, reject) => {
+        //调用api获取
         getMessage().then(res => {
-          const { unread, readed, trash } = res.data
-          commit('setMessageUnreadList', unread.sort((a, b) => new Date(b.create_time) - new Date(a.create_time)))
-          commit('setMessageReadedList', readed.map(_ => {
-            _.loading = false
+          // const { unread, readed, trash } = res.data 变量名不好理解，并且还多了一步赋值操作
+          // 还不如如下处理：直接对应返回的三个对象列表
+          console.log(res)
+          const {unreadList,readedList,trashList} = res.data
+          //store.commit('需要调用的mutations中的方法名'，参数传递)
+          commit('setMessageUnreadList', unreadList.sort((a, b) => new Date(b.create_time) - new Date(a.create_time)))
+          commit('setMessageReadedList', readedList.map(_ => {_.loading = false
             return _
           }).sort((a, b) => new Date(b.create_time) - new Date(a.create_time)))
-          commit('setMessageTrashList', trash.map(_ => {
+          commit('setMessageTrashList', trashList.map(_ => {
             _.loading = false
             return _
           }).sort((a, b) => new Date(b.create_time) - new Date(a.create_time)))
@@ -212,6 +173,58 @@ export default {
           reject(error)
         })
       })
-    }
+    },
+        // 登录
+    handleLogin ({ commit }, {userName, password}) {
+      userName = userName.trim()
+      return new Promise((resolve, reject) => {
+        login({
+          userName,
+          password
+        }).then(res => {
+          const data = res.data
+          commit('setToken', data.token)
+          resolve()
+        }).catch(err => {
+          reject(err)
+        })
+      })
+    },
+    // 退出登录
+    handleLogOut ({ state, commit }) {
+      return new Promise((resolve, reject) => {
+        logout(state.token).then(() => {
+          commit('setToken', '')
+          commit('setAccess', [])
+          resolve()
+        }).catch(err => {
+          reject(err)
+        })
+        // 如果你的退出登录无需请求接口，则可以直接使用下面三行代码而无需使用logout调用接口
+        // commit('setToken', '')
+        // commit('setAccess', [])
+        // resolve()
+      })
+    },
+    // 获取用户相关信息
+    getUserInfo ({ state, commit }) {
+      return new Promise((resolve, reject) => {
+        try {
+          getUserInfo(state.token).then(res => {
+            const data = res.data
+            commit('setAvator', data.avator)
+            commit('setUserName', data.name)
+            commit('setUserId', data.user_id)
+            commit('setAccess', data.access)
+            commit('setHasGetInfo', true)
+            resolve(data)
+          }).catch(err => {
+            reject(err)
+          })
+        } catch (error) {
+          reject(error)
+        }
+      })
+    },
   }
 }

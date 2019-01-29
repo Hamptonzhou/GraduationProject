@@ -11,9 +11,7 @@ import {
   localSave,
   localRead
 } from '@/libs/util'
-import {
-  saveErrorLogger
-} from '@/api/data'
+
 import router from '@/router'
 import routers from '@/router/routers'
 import config from '@/config'
@@ -87,12 +85,6 @@ export default {
       localSave('local', lang)
       state.local = lang
     },
-    addError(state, error) {
-      state.errorList.push(error)
-    },
-    setHasReadErrorLoggerStatus(state, status = true) {
-      state.hasReadErrorPage = status
-    }
   },
   actions: {
     addErrorLog({
@@ -114,9 +106,6 @@ export default {
         userId,
         userName
       }
-      saveErrorLogger(info).then(() => {
-        commit('addError', data)
-      })
     }
   }
 }

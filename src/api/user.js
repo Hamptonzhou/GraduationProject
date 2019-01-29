@@ -34,10 +34,10 @@ export const logout = (token) => {
 
 //在这里修改，请求真实的后端消息模块的接口？？？by zhou
 export const getUnreadCount = () => {
-  return axios.request({
-    url: 'message/count',
-    method: 'get'
-  })
+  // return axios.request({
+  //   url: 'message/count',
+  //   method: 'get'
+  // })
 }
 
 export const getMessage = () => {

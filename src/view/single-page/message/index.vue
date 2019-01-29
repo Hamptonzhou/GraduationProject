@@ -14,8 +14,8 @@
           <!-- <MenuItem name="broadcast">
             <span class="category-title">广播消息</span>
             <Badge style="margin-left: 10px" class-name="gray-dadge" :count="broadcastCount"></Badge>
-          </MenuItem>
-          <MenuItem name="sended">
+          </MenuItem> -->
+          <!-- <MenuItem name="sended">
             <span class="category-title">已发消息</span>
             <Badge style="margin-left: 10px" class-name="gray-dadge" :count="sengedMessageCount"></Badge>
           </MenuItem>-->
@@ -61,7 +61,7 @@
 
 <script>
 // 从vuex维护的store文件夹中获取对应的state、mutations、getters、actions，注意：这几个对象分别在vue实例的computed、methods中使用
-import { mapState, mapGetters, mapMutations, mapActions } from 'vuex'
+import { mapState, mapGetters, mapMutations, mapActions } from "vuex";
 const listDic = {
   unread: "messageUnreadList",
   readed: "messageReadedList",
@@ -98,6 +98,13 @@ export default {
       "messageReadedCount",
       "messageTrashCount"
     ])
+  },
+  mounted() {
+    this.listLoading = true;
+    // 初始化的是时候，立刻请求获取消息列表
+    this.getMessageList()
+      .then(() => this.stopLoading("listLoading"))
+      .catch(() => this.stopLoading("listLoading"));
   },
   methods: {
     ...mapMutations([
@@ -136,13 +143,6 @@ export default {
       if (this.currentMessageType === "readed") this.removeReaded({ msg_id });
       else this.restoreTrash({ msg_id });
     }
-  },
-  mounted() {
-    this.listLoading = true;
-    // 请求获取消息列表
-    this.getMessageList()
-      .then(() => this.stopLoading("listLoading"))
-      .catch(() => this.stopLoading("listLoading"));
   }
 };
 </script>

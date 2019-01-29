@@ -6,9 +6,10 @@ const Random = Mock.Random
 
 export const getMessageInit = () => {
 
-  //消息页面的mock数据来源于此
+  //消息页面的mock数据来源于此，
+  //这个方法在消息页面初始化时调用，返回了已读、未读、回收站这三种的数据列表
   let unreadList = []
-  doCustomTimes(3, () => {
+  doCustomTimes(5, () => {
     unreadList.push(Mock.mock({
       title: Random.cword(10, 15),
       create_time: '@date',
@@ -32,9 +33,13 @@ export const getMessageInit = () => {
     }))
   })
   return {
-    unread: unreadList,
-    readed: readedList,
-    trash: trashList
+    //返回已读、未读、回收站的列表。并且把查询(这里使用mock)到的unreadList集合赋值给unread，方便给调用发接收
+    // unread: unreadList,
+    // readed: readedList,
+    // trash: trashList
+    unreadList,
+    readedList,
+    trashList
   }
 }
 
@@ -56,5 +61,5 @@ export const restoreTrash = () => {
 
 //mock指定调用的方法，返回数据
 export const messageCount = () => {
-  return 3
+  return 10
 }
