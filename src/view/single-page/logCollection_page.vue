@@ -35,6 +35,7 @@
       :loading="isloading"
       @on-row-dblclick="getRowClick"
       ref="table"
+      :height="tableHeight"
       :columns="columns"
       :data="logList"
     ></Table>
@@ -133,12 +134,20 @@ export default {
       endDate: null,
       keyword: null,
       isShow: false,
-      LogDetail: {}
+      LogDetail: {},
+      tableHeight: 680
     };
   },
   mounted() {
     this.isloading = true;
     this.getLogList();
+    // this.tableHeight = window.innerHeight;
+
+    // console.log(
+    //   this.tableHeight,
+    //   window.innerHeight,
+    //   this.$refs.table.$el.offsetTop
+    // );
   },
 
   methods: {
