@@ -11,10 +11,10 @@
             <span class="category-title">已读消息</span>
             <Badge style="margin-left: 10px" class-name="gray-dadge" :count="messageReadedCount"></Badge>
           </MenuItem>
-          <!-- <MenuItem name="broadcast">
+          <MenuItem name="broadcast">
             <span class="category-title">广播消息</span>
-            <Badge style="margin-left: 10px" class-name="gray-dadge" :count="broadcastCount"></Badge>
-          </MenuItem> -->
+            <Badge style="margin-left: 10px" class-name="gray-dadge" :count="messagebroadcastCount"></Badge>
+          </MenuItem>
           <!-- <MenuItem name="sended">
             <span class="category-title">已发消息</span>
             <Badge style="margin-left: 10px" class-name="gray-dadge" :count="sengedMessageCount"></Badge>
@@ -28,10 +28,10 @@
       <div class="message-page-con message-list-con">
         <Spin fix v-if="listLoading" size="large"></Spin>
         <Menu width="auto" active-name :class="titleClass" @on-select="handleView">
-          <MenuItem v-for="item in messageList" :name="item.msg_id" :key="`msg_${item.msg_id}`">
+          <MenuItem v-for="item in messageList" :name="item.id" :key="`msg_${item.id}`">
             <div>
               <p class="msg-title">{{ item.title }}</p>
-              <Badge status="default" :text="item.create_time"/>
+              <Badge status="default" :text="item.sendTime"/>
               <Button
                 style="float: right;margin-right: 20px;"
                 :style="{ display: item.loading ? 'inline-block !important' : '' }"
@@ -51,7 +51,7 @@
         <Spin fix v-if="contentLoading" size="large"></Spin>
         <div class="message-view-header">
           <h2 class="message-view-title">{{ showingMsgItem.title }}</h2>
-          <time class="message-view-time">{{ showingMsgItem.create_time }}</time>
+          <time class="message-view-time">{{ showingMsgItem.sendTime }}</time>
         </div>
         <div v-html="messageContent"></div>
       </div>
@@ -65,7 +65,8 @@ import { mapState, mapGetters, mapMutations, mapActions } from "vuex";
 const listDic = {
   unread: "messageUnreadList",
   readed: "messageReadedList",
-  trash: "messageTrashList"
+  trash: "messageTrashList",
+  broadcast: "messageBroadcastList"
 };
 export default {
   name: "message_page",
@@ -83,6 +84,7 @@ export default {
       messageUnreadList: state => state.user.messageUnreadList,
       messageReadedList: state => state.user.messageReadedList,
       messageTrashList: state => state.user.messageTrashList,
+      messageBroadcastList: state => state.user.messageBroadcastList,
       messageList() {
         return this[listDic[this.currentMessageType]];
       },
@@ -96,7 +98,8 @@ export default {
       //需要获取未读的消息数量，不在这里进行直接调用后端api，而是从vuex的存储中去查找(vuex维护详细相关的组件在stroe文件夹下的user.js)by zhou
       "messageUnreadCount",
       "messageReadedCount",
-      "messageTrashCount"
+      "messageTrashCount",
+      "messagebroadcastCount"
     ])
   },
   mounted() {
@@ -111,8 +114,8 @@ export default {
       //
     ]),
     ...mapActions([
-      "getContentByMsgId",
       "getMessageList",
+      "getContentByMsgId",
       "hasRead",
       "removeReaded",
       "restoreTrash"
@@ -123,14 +126,14 @@ export default {
     handleSelect(name) {
       this.currentMessageType = name;
     },
-    handleView(msg_id) {
+    handleView(id) {
       this.contentLoading = true;
-      this.getContentByMsgId({ msg_id })
+      this.getContentByMsgId({ id })
         .then(content => {
           this.messageContent = content;
-          const item = this.messageList.find(item => item.msg_id === msg_id);
+          const item = this.messageList.find(item => item.id === id);
           if (item) this.showingMsgItem = item;
-          if (this.currentMessageType === "unread") this.hasRead({ msg_id });
+          if (this.currentMessageType === "unread") this.hasRead({ id });
           this.stopLoading("contentLoading");
         })
         .catch(() => {
@@ -139,9 +142,9 @@ export default {
     },
     removeMsg(item) {
       item.loading = true;
-      const msg_id = item.msg_id;
-      if (this.currentMessageType === "readed") this.removeReaded({ msg_id });
-      else this.restoreTrash({ msg_id });
+      const id = item.id;
+      if (this.currentMessageType === "readed") this.removeReaded({ id });
+      else this.restoreTrash({ id });
     }
   }
 };

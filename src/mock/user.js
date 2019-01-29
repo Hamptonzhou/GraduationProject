@@ -32,6 +32,7 @@ export const getMessageInit = () => {
       msg_id: Random.increment(100)
     }))
   })
+  console.log(unreadList, readedList, trashList)
   return {
     //返回已读、未读、回收站的列表。并且把查询(这里使用mock)到的unreadList集合赋值给unread，方便给调用发接收
     // unread: unreadList,

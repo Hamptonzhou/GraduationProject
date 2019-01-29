@@ -2,8 +2,6 @@ import {
   login,
   logout,
   getUserInfo,
-
-  getMessage,
   getContentByMsgId,
   hasRead,
   removeReaded,
@@ -26,6 +24,7 @@ export default {
     messageUnreadList: [],
     messageReadedList: [],
     messageTrashList: [],
+    messageBroadcastList:[],
     messageContentStore: {}
   },
   mutations: {
@@ -63,7 +62,9 @@ export default {
       msgItem.loading = false
       state[to].unshift(msgItem)
     },
-
+    setMessageBroadcastList (state, list) {
+      state.messageBroadcastList = list
+    },
     setMessageUnreadList (state, list) {
       state.messageUnreadList = list
     },
@@ -74,7 +75,8 @@ export default {
   getters: {
     messageUnreadCount: state => state.messageUnreadList.length,
     messageReadedCount: state => state.messageReadedList.length,
-    messageTrashCount: state => state.messageTrashList.length
+    messageTrashCount: state => state.messageTrashList.length,
+    messagebroadcastCount: state => state.messageBroadcastList.length,
   },
   actions: {
     // 未使用，页面上的未读条数是通过getters中的messageUnreadCount获取的。分析错误！
@@ -83,35 +85,32 @@ export default {
 
     // 此方法用来获取未读消息条数，接口只返回数值，不返回消息列表
     getUnreadMessageCount ({ state, commit }) {
-      // getUnreadCount().then(res => {
         messageApi.countUnreadMessage().then(res => {
-        // const { data } = 
         commit('setMessageCount', res.data)
       })
     },
     // 初始化时，立刻被调用。获取了三种消息的列表实体，其中包含未读、已读、回收站三个列表
     getMessageList ({ state, commit }) {
-      return new Promise((resolve, reject) => {
-        //调用api获取
-        getMessage().then(res => {
-          // const { unread, readed, trash } = res.data 变量名不好理解，并且还多了一步赋值操作
-          // 还不如如下处理：直接对应返回的三个对象列表
-          console.log(res)
-          const {unreadList,readedList,trashList} = res.data
-          //store.commit('需要调用的mutations中的方法名'，参数传递)
-          commit('setMessageUnreadList', unreadList.sort((a, b) => new Date(b.create_time) - new Date(a.create_time)))
-          commit('setMessageReadedList', readedList.map(_ => {_.loading = false
-            return _
-          }).sort((a, b) => new Date(b.create_time) - new Date(a.create_time)))
-          commit('setMessageTrashList', trashList.map(_ => {
-            _.loading = false
-            return _
-          }).sort((a, b) => new Date(b.create_time) - new Date(a.create_time)))
-          resolve()
-        }).catch(error => {
-          reject(error)
-        })
+      messageApi.listUnreadMessage().then(res => {
+        const unreadList = res.data.rows
+        commit('setMessageUnreadList', unreadList.sort((a, b) => new Date(b.create_time) - new Date(a.create_time)))
       })
+
+      messageApi.listReadedMessage().then(res => {
+        const readedList = res.data.rows
+        commit('setMessageReadedList', readedList.map(_ => {_.loading = false; return _ }).sort((a, b) => new Date(b.create_time) - new Date(a.create_time)))
+      })
+
+      messageApi.listBroadcastMessage().then(res => {
+        const broadcastList = res.data.rows
+        commit('setMessageBroadcastList', broadcastList.map(_ => { _.loading = false; return _}).sort((a, b) => new Date(b.create_time) - new Date(a.create_time)))
+      })
+
+      messageApi.listTrashMessage().then(res => {
+        const trashList = res.data.rows
+        commit('setMessageTrashList', trashList.map(_ => { _.loading = false; return _}).sort((a, b) => new Date(b.create_time) - new Date(a.create_time)))
+      })
+         
     },
     // 根据当前点击的消息的id获取内容
     getContentByMsgId ({ state, commit }, { msg_id }) {
