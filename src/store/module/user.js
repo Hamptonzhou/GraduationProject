@@ -2,7 +2,7 @@ import {
   login,
   logout,
   getUserInfo,
-  getContentByMsgId,
+  // getContentByMsgId,
   hasRead,
   removeReaded,
   restoreTrash,
@@ -92,35 +92,59 @@ export default {
     // 初始化时，立刻被调用。获取了三种消息的列表实体，其中包含未读、已读、回收站三个列表
     getMessageList ({ state, commit }) {
       messageApi.listUnreadMessage().then(res => {
-        const unreadList = res.data.rows
-        commit('setMessageUnreadList', unreadList.sort((a, b) => new Date(b.create_time) - new Date(a.create_time)))
+        if(res.status===0){
+          const unreadList = res.data.rows
+          commit('setMessageUnreadList', unreadList.sort((a, b) => new Date(b.create_time) - new Date(a.create_time)))
+        }else{
+          console.log("else-获取未读消息列表失败")
+        }
+      }).catch(err=>{
+        console.log("catch-获取未读消息列表失败")
       })
 
       messageApi.listReadedMessage().then(res => {
-        const readedList = res.data.rows
-        commit('setMessageReadedList', readedList.map(_ => {_.loading = false; return _ }).sort((a, b) => new Date(b.create_time) - new Date(a.create_time)))
-      })
+        if(res.status===0){
+          const readedList = res.data.rows
+          commit('setMessageReadedList', readedList.map(_ => {_.loading = false; return _ }).sort((a, b) => new Date(b.create_time) - new Date(a.create_time)))
+        }else{
+          console.log("else-获取已读消息列表失败")
+        }
+        }).catch(err=>{
+          console.log("catch-获取已读消息列表失败")
+        })
 
       messageApi.listBroadcastMessage().then(res => {
+        if(res.status===0){
         const broadcastList = res.data.rows
         commit('setMessageBroadcastList', broadcastList.map(_ => { _.loading = false; return _}).sort((a, b) => new Date(b.create_time) - new Date(a.create_time)))
+        }else{
+          console.log("else-获取广播消息列表失败")
+        }
+      }).catch(err=>{
+        console.log("catch-获取广播消息列表失败")
       })
 
       messageApi.listTrashMessage().then(res => {
-        const trashList = res.data.rows
+        if(res.status===0){
+          const trashList = res.data.rows
         commit('setMessageTrashList', trashList.map(_ => { _.loading = false; return _}).sort((a, b) => new Date(b.create_time) - new Date(a.create_time)))
+        }else{
+          console.log("else-获取回收站消息列表失败")
+        }
+      }).catch(err=>{
+        console.log("catch-获取回收站消息列表失败")
       })
          
     },
     // 根据当前点击的消息的id获取内容
     getContentByMsgId ({ state, commit }, { msg_id }) {
-      return new Promise((resolve, reject) => {
+       return new Promise((resolve, reject) => {
         let contentItem = state.messageContentStore[msg_id]
         if (contentItem) {
           resolve(contentItem)
         } else {
-          getContentByMsgId(msg_id).then(res => {
-            const content = res.data
+          messageApi.getContentByMsgId(msg_id).then(res => {
+            const content = res.data.data.content
             commit('updateMessageContentStore', { msg_id, content })
             resolve(content)
           })
@@ -130,7 +154,7 @@ export default {
     // 把一个未读消息标记为已读
     hasRead ({ state, commit }, { msg_id }) {
       return new Promise((resolve, reject) => {
-        hasRead(msg_id).then(() => {
+        messageApi.hasRead(msg_id).then(() => {
           commit('moveMsg', {
             from: 'messageUnreadList',
             to: 'messageReadedList',

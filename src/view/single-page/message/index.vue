@@ -1,6 +1,7 @@
 <template>
   <Card shadow>
     <div>
+      <!-- 这里是消息的类型选择 -->
       <div class="message-page-con message-category-con">
         <Menu width="auto" active-name="unread" @on-select="handleSelect">
           <MenuItem name="unread">
@@ -25,13 +26,14 @@
           </MenuItem>
         </Menu>
       </div>
+      <!-- 这里是各种消息的类型概览 -->
       <div class="message-page-con message-list-con">
         <Spin fix v-if="listLoading" size="large"></Spin>
         <Menu width="auto" active-name :class="titleClass" @on-select="handleView">
           <MenuItem v-for="item in messageList" :name="item.id" :key="`msg_${item.id}`">
             <div>
               <p class="msg-title">{{ item.title }}</p>
-              <Badge status="default" :text="item.sendTime"/>
+              <!-- <Badge status="default" :text="item.sendTime"/> -->
               <Button
                 style="float: right;margin-right: 20px;"
                 :style="{ display: item.loading ? 'inline-block !important' : '' }"
@@ -40,13 +42,14 @@
                 :icon="currentMessageType === 'readed' ? 'md-trash' : 'md-redo'"
                 :title="currentMessageType === 'readed' ? '删除' : '还原'"
                 type="text"
-                v-show="currentMessageType !== 'unread'"
+                v-show="currentMessageType !== 'unread'&&currentMessageType !== 'broadcast'"
                 @click.native.stop="removeMsg(item)"
               ></Button>
             </div>
           </MenuItem>
         </Menu>
       </div>
+      <!-- 这里是消息的主页面 -->
       <div class="message-page-con message-view-con">
         <Spin fix v-if="contentLoading" size="large"></Spin>
         <div class="message-view-header">
@@ -94,6 +97,8 @@ export default {
         };
       }
     }),
+
+    //在vuex中维护的getters变量
     ...mapGetters([
       //需要获取未读的消息数量，不在这里进行直接调用后端api，而是从vuex的存储中去查找(vuex维护详细相关的组件在stroe文件夹下的user.js)by zhou
       "messageUnreadCount",
@@ -102,9 +107,10 @@ export default {
       "messagebroadcastCount"
     ])
   },
+
+  // 初始化的是时候，立刻请求获取消息列表
   mounted() {
     this.listLoading = true;
-    // 初始化的是时候，立刻请求获取消息列表
     this.getMessageList()
       .then(() => this.stopLoading("listLoading"))
       .catch(() => this.stopLoading("listLoading"));
@@ -113,6 +119,8 @@ export default {
     ...mapMutations([
       //
     ]),
+
+    //在vuex中维护的actions的方法
     ...mapActions([
       "getMessageList",
       "getContentByMsgId",
@@ -120,20 +128,34 @@ export default {
       "removeReaded",
       "restoreTrash"
     ]),
+
+    //抽取出停止加载动画的方法
     stopLoading(name) {
       this[name] = false;
     },
+
+    //选择消息的类型，以在右侧展开相应类型的消息概览
     handleSelect(name) {
       this.currentMessageType = name;
     },
-    handleView(id) {
+
+    //根据点击的id，查看消息详细情况
+    handleView(msg_id) {
       this.contentLoading = true;
-      this.getContentByMsgId({ id })
+      this.getContentByMsgId({msg_id})
         .then(content => {
+          console.log(msg_id)
           this.messageContent = content;
-          const item = this.messageList.find(item => item.id === id);
-          if (item) this.showingMsgItem = item;
-          if (this.currentMessageType === "unread") this.hasRead({ id });
+          //根据点击的消息id,在当前的类型列表中找到点击的那条消息的
+          const item = this.messageList.find(item => item.id === msg_id);
+          if (item) {
+            this.showingMsgItem = item;
+            }
+            //如果时未读的消息，这里将其设置成已读
+          if (this.currentMessageType === "unread") {
+            console.log(msg_id)
+            this.hasRead({ msg_id });
+          }
           this.stopLoading("contentLoading");
         })
         .catch(() => {

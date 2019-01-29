@@ -32,31 +32,6 @@ export const logout = (token) => {
   })
 }
 
-//在这里修改，请求真实的后端消息模块的接口？？？by zhou
-export const getUnreadCount = () => {
-  // return axios.request({
-  //   url: 'message/count',
-  //   method: 'get'
-  // })
-}
-
-export const getMessage = () => {
-  return axios.request({
-    url: 'message/init',
-    method: 'get'
-  })
-}
-
-export const getContentByMsgId = msg_id => {
-  return axios.request({
-    url: 'message/content',
-    method: 'get',
-    params: {
-      msg_id
-    }
-  })
-}
-
 export const hasRead = msg_id => {
   return axios.request({
     url: 'message/has_read',
@@ -86,3 +61,28 @@ export const restoreTrash = msg_id => {
     }
   })
 }
+
+//在这里修改，请求真实的后端消息模块的接口？？？by zhou
+// export const getUnreadCount = () => {
+// return axios.request({
+//   url: 'message/count',
+//   method: 'get'
+// })
+// }
+
+// export const getMessage = () => {
+//   return axios.request({
+//     url: 'message/init',
+//     method: 'get'
+//   })
+// }
+
+// export const getContentByMsgId = msg_id => {
+//   return axios.request({
+//     url: 'message/content',
+//     method: 'get',
+//     params: {
+//       msg_id
+//     }
+//   })
+// }

@@ -1,6 +1,8 @@
 import config from './config'
 const baseUrl = config.baseUrl
 
+import axios from 'axios'
+
 export default {
   // 获取未读数量
   countUnreadMessage() {
@@ -34,4 +36,29 @@ export default {
       queryId: "zhou"
     });
   },
+
+  //根据消息id获取指定的消息体
+  getContentByMsgId(msg_id) {
+    return axios.get(baseUrl + '/MessageController/getContentByMsgId', {
+      params: {
+        userId: "zhou",
+        messageItemIds: msg_id
+      }
+    })
+    // return config.doGetPromise(baseUrl + '/MessageController/readMessage', {
+    //   userId:"zhou",
+    //   messageItemIds: msg_id
+    // })
+  },
+
+  //根据消息id获取指定的消息体
+  hasRead(msg_id) {
+    return axios.get(baseUrl + '/MessageController/setHasRead', {
+      params: {
+        userId: "zhou",
+        messageItemIds: msg_id
+      }
+    })
+  }
+
 }
