@@ -142,18 +142,18 @@ export default {
     //根据点击的id，查看消息详细情况
     handleView(msg_id) {
       this.contentLoading = true;
-      this.getContentByMsgId({msg_id})
+      this.getContentByMsgId({ msg_id })
         .then(content => {
-          console.log(msg_id)
+          console.log(msg_id,content);
           this.messageContent = content;
           //根据点击的消息id,在当前的类型列表中找到点击的那条消息的
           const item = this.messageList.find(item => item.id === msg_id);
           if (item) {
             this.showingMsgItem = item;
-            }
-            //如果时未读的消息，这里将其设置成已读
+          }
+          //如果是未读的消息，这里将其设置成已读
           if (this.currentMessageType === "unread") {
-            console.log(msg_id)
+            console.log(msg_id);
             this.hasRead({ msg_id });
           }
           this.stopLoading("contentLoading");
@@ -164,9 +164,14 @@ export default {
     },
     removeMsg(item) {
       item.loading = true;
-      const id = item.id;
-      if (this.currentMessageType === "readed") this.removeReaded({ id });
-      else this.restoreTrash({ id });
+      const msg_id = item.id;
+      if (this.currentMessageType === "readed") {
+        console.log(msg_id, item.content);
+        this.removeReaded({ msg_id });
+      } else {
+        console.log(msg_id, item.content);
+        this.restoreTrash({ msg_id });
+      }
     }
   }
 };
