@@ -51,9 +51,29 @@ export default {
     // })
   },
 
-  //根据消息id获取指定的消息体
+  //点击消息，进行查看后，将消息的状态设置成已读
   hasRead(msg_id) {
     return axios.get(baseUrl + '/MessageController/setHasRead', {
+      params: {
+        userId: "zhou",
+        messageItemIds: msg_id
+      }
+    })
+  },
+
+  //删除消息，即把消息删除标志设置成1，把消息放入回收站即可
+  deletePersonalMessage(msg_id) {
+    return axios.get(baseUrl + '/MessageController/deletePersonalMessage', {
+      params: {
+        userId: "zhou",
+        messageItemIds: msg_id
+      }
+    })
+  },
+
+  //将回收站的消息恢复到已读消息，修改删除标志为0即可
+  restoreDeleteMessage(msg_id) {
+    return axios.get(baseUrl + '/MessageController/restoreDeleteMessage', {
       params: {
         userId: "zhou",
         messageItemIds: msg_id

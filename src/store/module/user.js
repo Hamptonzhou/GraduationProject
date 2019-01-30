@@ -170,12 +170,13 @@ export default {
     // 删除一个已读消息到回收站
     removeReaded ({ commit }, { msg_id }) {
       return new Promise((resolve, reject) => {
-        removeReaded(msg_id).then(() => {
-          commit('moveMsg', {
-            from: 'messageReadedList',
-            to: 'messageTrashList',
-            msg_id
-          })
+        messageApi.deletePersonalMessage(msg_id).then((res) => {
+          if(res.data.status===0){
+            commit('moveMsg', {
+              from: 'messageReadedList',
+              to: 'messageTrashList',
+              msg_id
+          })}
           resolve()
         }).catch(error => {
           reject(error)
@@ -185,7 +186,7 @@ export default {
     // 还原一个已删除消息到已读消息
     restoreTrash ({ commit }, { msg_id }) {
       return new Promise((resolve, reject) => {
-        restoreTrash(msg_id).then(() => {
+        messageApi.restoreDeleteMessage(msg_id).then(() => {
           commit('moveMsg', {
             from: 'messageTrashList',
             to: 'messageReadedList',
