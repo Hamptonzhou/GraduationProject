@@ -57,7 +57,7 @@ export default {
       state.messageContentStore[msg_id] = content
     },
     moveMsg (state, { from, to, msg_id }) {
-      const index = state[from].findIndex(_ => _.msg_id === msg_id)
+      const index = state[from].findIndex(_ => _.id === msg_id)
       const msgItem = state[from].splice(index, 1)[0]
       msgItem.loading = false
       state[to].unshift(msgItem)
