@@ -26,63 +26,6 @@ export default [{
     },
     component: () => import('@/view/login/login.vue')
   },
-  {
-    path: '/',
-    name: '_home',
-    redirect: '/home',
-    component: Main,
-    meta: {
-      hideInMenu: true,
-      // notCache: true
-    },
-    children: [{
-      path: '/home',
-      name: 'home',
-      meta: {
-        hideInMenu: true,
-        title: '首页',
-        // notCache: true,
-        icon: 'md-home'
-      },
-      component: () => import('@/view/single-page/home')
-    }]
-  },
-  {
-    path: '/join',
-    name: 'join',
-    component: Main,
-    meta: {
-      hideInBread: true
-    },
-    children: [{
-      path: 'join_page',
-      name: 'join_page',
-      meta: {
-        icon: '',
-        title: 'QQ群'
-      },
-      component: () => import('@/view/join-page.vue')
-    }]
-  },
-
-  {
-    path: '/components',
-    name: 'components',
-    meta: {
-      icon: 'logo-buffer',
-      title: '组件'
-    },
-    component: Main,
-    children: [{
-      path: 'tables_page',
-      name: 'tables_page',
-      meta: {
-        icon: 'md-grid',
-        title: '多功能表格'
-      },
-      component: () => import('@/view/components/tables/tables.vue')
-    }, ]
-  },
 
   {
     path: '/401',
@@ -111,6 +54,27 @@ export default [{
 
 
   // ################################################################毕设开发################################################################
+  {
+    path: '/',
+    name: '_home',
+    redirect: '/home',
+    component: Main,
+    meta: {
+      hideInMenu: false,
+      // notCache: true
+    },
+    children: [{
+      path: '/home',
+      name: 'home',
+      meta: {
+        hideInMenu: false,
+        title: '首页',
+        // notCache: true,
+        icon: 'md-home',
+      },
+      component: () => import('@/view/single-page/home')
+    }]
+  },
   {
     path: '/log',
     name: 'log',
@@ -142,8 +106,8 @@ export default [{
       path: 'organization_page',
       name: 'organization_page',
       meta: {
-        icon: 'md-planet',
-        title: ' {{ organization_page }}'
+        icon: 'ios-people',
+        title: '组织机构'
       },
       component: () => import('@/view/organization/organization_page.vue')
     }]
@@ -166,10 +130,66 @@ export default [{
       component: () => import('@/view/single-page/message/index.vue')
     }]
   },
+
+  {
+    path: '/myWork',
+    name: 'myWork',
+    meta: {
+      icon: 'logo-buffer',
+      title: '我的工作'
+    },
+    component: Main,
+    children: [{
+        path: 'handlingWork_page',
+        name: 'handlingWork_page',
+        meta: {
+          icon: 'ios-hand',
+          title: '在办工作'
+        },
+        component: () => import('@/view/components/tables/tables.vue')
+      },
+      {
+        path: 'personalDoneWork_page',
+        name: 'personalDoneWork_page',
+        meta: {
+          icon: 'ios-person',
+          title: '个人已办'
+        },
+        component: () => import('@/view/components/tables/tables.vue')
+      },
+      {
+        path: 'finishedWork_page',
+        name: 'finishedWork_page',
+        meta: {
+          icon: 'md-checkbox',
+          title: '办结工作'
+        },
+        component: () => import('@/view/components/tables/tables.vue')
+      }
+    ]
+  },
+  {
+    path: '/workflowDesigne',
+    name: 'workflowDesigne',
+    component: Main,
+    meta: {
+      hideInBread: true
+    },
+    children: [{
+      path: 'workflowDesigne_page',
+      name: 'workflowDesigne_page',
+      meta: {
+        icon: 'md-build',
+        title: '流程设计'
+      },
+      component: () => import('@/view/join-page.vue')
+    }]
+  },
   {
     path: '/formDesigner',
     name: 'formDesigner',
     meta: {
+      hideInBread: true,
       title: '表单设计器'
     },
     component: Main,

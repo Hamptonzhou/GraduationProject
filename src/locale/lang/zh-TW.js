@@ -36,14 +36,20 @@ export default {
   query: '帶參路由',
   params: '動態路由',
   cropper_page: '圖片裁剪',
-  message_page: '消息中心',
+  
   tree_table_page: '樹狀表格',
   org_tree_page: '組織結構樹',
   drag_drawer_page: '可拖動抽屜',
 
   // 毕设开发
   logCollection_page: '日誌收集',
-  organization_page: '組織結構系统',
-  formDesigner_page: '表單設計器'
+  organization_page: '組織結構',
+  formDesigner_page: '表單設計器',
+  message_page: '消息中心',
+  myWork: '我的工作',
+  handlingWork_page: '在辦工作',
+  personalDoneWork_page: '個人已辦',
+  finishedWork_page: '辦結工作',
+  workflowDesigne_page:'流程設計'
 
 }

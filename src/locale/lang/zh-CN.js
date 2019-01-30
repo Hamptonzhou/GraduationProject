@@ -17,12 +17,17 @@ export default {
   'i18n-tip': '注：仅此页做了多语言，其他页面没有在多语言包中添加语言内容',
   query: '带参路由',
   params: '动态路由',
-  message_page: '消息中心',
   org_tree_page: '组织结构树',
 
 
   // 毕设开发
   logCollection_page: '日志收集',
-  organization_page: '组织机构系统',
-  formDesigner_page: '表单设计器'
+  organization_page: '组织机构',
+  formDesigner_page: '表单设计器',
+  message_page: '消息中心',
+  myWork: '我的工作',
+  handlingWork_page: '在办工作',
+  personalDoneWork_page: '个人已办',
+  finishedWork_page: '办结工作',
+  workflowDesigne_page:'流程设计'
 }

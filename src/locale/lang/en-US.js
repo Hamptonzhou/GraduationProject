@@ -27,7 +27,7 @@ export default {
   'export-excel': 'Export Excel',
   tools_methods_page: 'Tools Methods',
   drag_list_page: 'Drag-list',
-  
+
   modalTitle: 'Modal Title',
   content: 'This is the modal box content.',
   buttonText: 'Show Modal',
@@ -37,7 +37,6 @@ export default {
   query: 'Query',
   params: 'Params',
   cropper_page: 'Cropper',
-  message_page: 'Message Center',
   tree_table_page: 'Tree Table',
   org_tree_page: 'Org Tree',
   drag_drawer_page: 'Draggable Drawer',
@@ -45,5 +44,11 @@ export default {
   //毕设开发
   logCollection_page: 'Logger Collection',
   organization_page: 'Organization System',
-  formDesigner_page: 'Form Designer'
+  formDesigner_page: 'Form Designer',
+  message_page: 'Message Center',
+  myWork: 'My Work',
+  handlingWork_page: 'Handling Work',
+  personalDoneWork_page: 'Personal Worked',
+  finishedWork_page: 'Finished Work',
+  workflowDesigne_page:'Workflow Designe'
 }
