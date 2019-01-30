@@ -1,13 +1,7 @@
 import axios from '@/libs/api.request'
 
-export const login = ({
-  userName,
-  password
-}) => {
-  const data = {
-    userName,
-    password
-  }
+export const login = ({userName,password}) => {
+  const data = {userName,password}
   return axios.request({
     url: 'login',
     data,
@@ -32,35 +26,6 @@ export const logout = (token) => {
   })
 }
 
-export const hasRead = msg_id => {
-  return axios.request({
-    url: 'message/has_read',
-    method: 'post',
-    data: {
-      msg_id
-    }
-  })
-}
-
-export const removeReaded = msg_id => {
-  return axios.request({
-    url: 'message/remove_readed',
-    method: 'post',
-    data: {
-      msg_id
-    }
-  })
-}
-
-export const restoreTrash = msg_id => {
-  return axios.request({
-    url: 'message/restore',
-    method: 'post',
-    data: {
-      msg_id
-    }
-  })
-}
 
 //在这里修改，请求真实的后端消息模块的接口？？？by zhou
 // export const getUnreadCount = () => {
@@ -82,6 +47,36 @@ export const restoreTrash = msg_id => {
 //     url: 'message/content',
 //     method: 'get',
 //     params: {
+//       msg_id
+//     }
+//   })
+// }
+
+// export const hasRead = msg_id => {
+//   return axios.request({
+//     url: 'message/has_read',
+//     method: 'post',
+//     data: {
+//       msg_id
+//     }
+//   })
+// }
+
+// export const removeReaded = msg_id => {
+//   return axios.request({
+//     url: 'message/remove_readed',
+//     method: 'post',
+//     data: {
+//       msg_id
+//     }
+//   })
+// }
+
+// export const restoreTrash = msg_id => {
+//   return axios.request({
+//     url: 'message/restore',
+//     method: 'post',
+//     data: {
 //       msg_id
 //     }
 //   })
