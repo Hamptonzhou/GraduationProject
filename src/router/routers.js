@@ -182,7 +182,7 @@ export default [{
         icon: 'md-build',
         title: '流程设计'
       },
-      component: () => import('@/view/workflowDesigne/workflowDesigne.vue')
+      component: () => import('@/view/workflowDesigne/workflowDesign.vue')
     }]
   },
   {

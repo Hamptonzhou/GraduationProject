@@ -1,15 +1,15 @@
 <template>
-  <div>
-    <h1>流程设计</h1>
-  </div>
+  <div>编辑流程显示页面</div>
 </template>
 
 <script>
 export default {
-  name: "join_page",
+  name: "",
   data() {
     return {};
-  }
+  },
+  methods: {},
+  mounted() {}
 };
 </script>
 

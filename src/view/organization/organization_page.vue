@@ -7,11 +7,11 @@
         </div>
         <div slot="right" class="split-pane">
           <Divider type="vertical"/>
-          <Button type="primary" ghost @click="changeComponent='addDepartment'">新建部门</Button>
+          <Button type="primary" ghost size="large" @click="changeComponent='addDepartment'">新建部门</Button>
           <Divider type="vertical"/>
-          <Button type="primary" ghost @click="changeComponent='addJobPosition'">新建岗位</Button>
+          <Button type="primary" ghost size="large" @click="changeComponent='addJobPosition'">新建岗位</Button>
           <Divider type="vertical"/>
-          <Button type="primary" ghost @click="changeComponent='addPeople'">新建人员</Button>
+          <Button type="primary" ghost size="large" @click="changeComponent='addPeople'">新建人员</Button>
           <Divider type="vertical"/>
           <Divider type="horizontal"/>
           <component :is="changeComponent"></component>
@@ -51,6 +51,9 @@ export default {
 }
 .split-pane {
   padding: 10px;
+}
+.ivu-divider-horizontal {
+  margin: 10px 0;
 }
 </style>
 
