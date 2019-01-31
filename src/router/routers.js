@@ -72,7 +72,7 @@ export default [{
         // notCache: true,
         icon: 'md-home',
       },
-      component: () => import('@/view/single-page/home')
+      component: () => import('@/view/home')
     }]
   },
   {
@@ -91,7 +91,7 @@ export default [{
         title: '日志收集',
         beforeCloseName: 'before_close_normal'
       },
-      component: () => import('@/view/single-page/logCollection_page.vue')
+      component: () => import('@/view/logCollection/logCollection_page.vue')
     }]
   },
 
@@ -127,7 +127,7 @@ export default [{
         icon: 'md-notifications',
         title: '消息中心'
       },
-      component: () => import('@/view/single-page/message/index.vue')
+      component: () => import('@/view/message/index.vue')
     }]
   },
 
