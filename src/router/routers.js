@@ -146,7 +146,7 @@ export default [{
           icon: 'ios-hand',
           title: '在办工作'
         },
-        component: () => import('@/view/components/tables/tables.vue')
+        component: () => import('@/view/myWork/hanglingWork.vue')
       },
       {
         path: 'personalDoneWork_page',
@@ -155,7 +155,7 @@ export default [{
           icon: 'ios-person',
           title: '个人已办'
         },
-        component: () => import('@/view/components/tables/tables.vue')
+        component: () => import('@/view/myWork/personalDoneWork.vue')
       },
       {
         path: 'finishedWork_page',
@@ -164,7 +164,7 @@ export default [{
           icon: 'md-checkbox',
           title: '办结工作'
         },
-        component: () => import('@/view/components/tables/tables.vue')
+        component: () => import('@/view/myWork/finishedWork.vue')
       }
     ]
   },
@@ -182,7 +182,7 @@ export default [{
         icon: 'md-build',
         title: '流程设计'
       },
-      component: () => import('@/view/join-page.vue')
+      component: () => import('@/view/workflowDesigne/workflowDesigne.vue')
     }]
   },
   {
