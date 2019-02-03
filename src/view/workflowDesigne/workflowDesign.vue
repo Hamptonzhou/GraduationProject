@@ -6,19 +6,14 @@
           <process-definition-tree></process-definition-tree>
         </div>
         <div slot="right" class="split-pane">
-          <Divider type="vertical"/>
-          <Button type="primary" ghost size="large" @click="changeComponent='createProcess'">新建流程</Button>
-          <Divider type="vertical"/>
-          <Button type="primary" ghost size="large" @click="changeComponent='editProcess'">编辑流程</Button>
-          <Divider type="vertical"/>
-          <Button
-            type="primary"
-            ghost
-            size="large"
-            @click="changeComponent='deploymentProcess'"
-          >发布流程</Button>
-          <Divider type="vertical"/>
-          <Divider type="horizontal"/>
+          <Divider type="vertical" />
+          <Button type="primary" ghost size="large" @click="changeComponent='createProcess'">新建模型</Button>
+          <Divider type="vertical" />
+          <Button type="primary" ghost size="large" @click="changeComponent='editProcess'">编辑模型</Button>
+          <Divider type="vertical" />
+          <Button type="primary" ghost size="large" @click="changeComponent='deploymentProcess'">发布模型 </Button>
+          <Divider type="vertical" />
+          <Divider type="horizontal" />
           <component :is="changeComponent"></component>
         </div>
       </Split>
