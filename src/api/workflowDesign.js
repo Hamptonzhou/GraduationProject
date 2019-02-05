@@ -8,7 +8,7 @@ export default {
   },
   // 获取所有模型数据
   getAllModel() {
-    return config.doGetPromise(baseUrl + '/model/list')
+    return config.doGetPromise(baseUrl + '/model/getAllModel')
   },
 
 }
