@@ -7,9 +7,6 @@
 <script>
 import workflowDesignApi from "@/api/workflowDesign.js";
 export default {
-  data() {
-    return {};
-  },
   methods: {
     //发出请求画图页面的请求
     getWorkflowDesignPage() {

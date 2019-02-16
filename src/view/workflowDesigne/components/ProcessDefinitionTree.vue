@@ -1,5 +1,5 @@
 <template>
-  <Tree :data="treeData" :render="renderContent"></Tree>
+  <Tree :data="treeData" :render="renderContent" @on-select-change="selected"></Tree>
 </template>
 <script>
 import workflowDesignApi from "@/api/workflowDesign.js";
@@ -14,32 +14,28 @@ export default {
     };
   },
   mounted() {
-    this.fetchAllmodel();
+    this.fetchProcessDefinitionTree();
   },
   methods: {
-    fetchAllmodel() {
-      workflowDesignApi.getAllModel().then(res => {
+    selected() {
+      console.log("选择节点");
+    },
+    fetchProcessDefinitionTree() {
+      workflowDesignApi.getProcessDefinitionTree().then(res => {
         if (res.status === 0) {
+          //后端定义的流程定义树的属性名称为title、children，与iview默认的一致，因此不需要额外赋值
           this.treeData = this.getTree(res.data);
+          // this.treeData = res.data;
         }
       });
     },
     getTree(tree = []) {
-      console.log(tree);
       let arr = [];
-      if (tree.length !== 0) {
-        tree.forEach(item => {
-          let obj = {};
-          obj.name = item.name;
-          // workflowDesignApi.fetchChildren()
-          obj.children = [
-            {
-              name: "child 1-1"
-            }
-          ];
-          arr.push(obj);
-        });
-      }
+      let obj = {};
+      obj.title = tree.title;
+      obj.children = tree.children;
+      obj.expand = true;
+      arr.push(obj);
       return arr;
     },
     renderContent(h, { root, node, data }) {
@@ -55,13 +51,13 @@ export default {
           h("span", [
             h("Icon", {
               props: {
-                type: "ios-cube"
+                // type: "ios-cube"
               },
               style: {
-                marginRight: "8px"
+                // marginRight: "8px"
               }
             }),
-            h("span", data.name)
+            h("span", data.title)
           ]),
           h(
             "span",
@@ -91,6 +87,9 @@ export default {
     },
     //删除时触发的逻辑，调用后台接口，删除数据库中的模型
     remove(root, node, data) {
+      console.log(
+        data + "获取到id--判断选中的时候模型还是流程--再进行判断删除"
+      );
       const parentKey = root.find(el => el === node).parent;
       const parent = root.find(el => el.nodeKey === parentKey).node;
       const index = parent.children.indexOf(data);
