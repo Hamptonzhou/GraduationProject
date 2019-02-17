@@ -28,11 +28,11 @@ export default {
                 this.image = null;
               }
             } else {
-              console.log("else--请求服务器失败");
+              this.$Modal.error({ title: "错误", content: res.message });
             }
           })
           .catch(err => {
-            console.log("catch--请求服务器失败");
+            this.$Modal.error({ title: "错误", content: "请求服务器错误" });
           });
       } else if (selectedNodeTitle.includes("版本")) {
         workflowDesignApi
@@ -42,11 +42,11 @@ export default {
               //操作返回的base64的图片数据，显示在页面上
               this.image = "data:image/png;base64," + res.data.image;
             } else {
-              console.log("else--请求服务器失败");
+              this.$Modal.error({ title: "错误", content: res.message });
             }
           })
           .catch(err => {
-            console.log("catch--请求服务器失败");
+            this.$Modal.error({ title: "错误", content: "请求服务器错误" });
           });
       }
     }

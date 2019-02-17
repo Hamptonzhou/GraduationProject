@@ -40,4 +40,16 @@ export default {
       modelId: modelId
     })
   },
+  //删除流程定义
+  deleteDeploymentProcessDefinitionById(processDefinitionId) {
+    return config.doGetPromise(baseUrl + '/CustomConteoller/deleteDeploymentProcessDefinitionById', {
+      processDefinitionId: processDefinitionId
+    })
+  },
+  //管理员级联删除流程定义
+  cascadeDeleteDeployment(processDefinitionId) {
+    return config.doGetPromise(baseUrl + '/CustomConteoller/cascadeDeleteDeployment', {
+      processDefinitionId: processDefinitionId
+    })
+  },
 }

@@ -70,21 +70,55 @@ export default {
           if (res.status === 0) {
             this.spinShow = false;
             this.reloadFlag = true;
+            this.$Modal.success({ title: "成功", content: "发布成功" });
           } else {
             this.spinShow = false;
             this.reloadFlag = true;
             this.$Modal.error({ title: "错误", content: res.message });
-            console.log("else---程序出错状态码非零");
           }
         })
         .catch(err => {
-          console.log("catch---请求服务器错误");
+          this.spinShow = false;
+          this.reloadFlag = true;
+          this.$Modal.error({ title: "错误", content: "请求服务器错误" });
         });
     },
     //删除模型或流程
     deleteModelOrProcessDefinition() {
-      console.log("删除id" + this.selectedNodeId);
-      console.log("删除title" + this.selectedNodeTitle);
+      this.reloadFlag = false;
+      if (this.selectedNodeTitle.includes("草稿")) {
+        workflowDesignApi
+          .deleteModelById(this.selectedNodeId)
+          .then(res => {
+            if (res.status === 0) {
+              this.reloadFlag = true;
+              this.$Modal.success({ title: "操作成功", content: res.message });
+            } else {
+              this.reloadFlag = true;
+              this.$Modal.error({ title: "操作失败", content: res.message });
+            }
+          })
+          .catch(err => {
+            this.reloadFlag = true;
+            this.$Modal.error({ title: "操作失败", content: "请求服务器失败" });
+          });
+      } else if (this.selectedNodeTitle.includes("版本")) {
+        workflowDesignApi
+          .deleteDeploymentProcessDefinitionById(this.selectedNodeId)
+          .then(res => {
+            if (res.status === 0) {
+              this.reloadFlag = true;
+              this.$Modal.success({ title: "操作成功", content: res.message });
+            } else {
+              this.reloadFlag = true;
+              this.$Modal.error({ title: "操作失败", content: res.message });
+            }
+          })
+          .catch(err => {
+            this.reloadFlag = true;
+            this.$Modal.error({ title: "操作失败", content: "请求服务器失败" });
+          });
+      }
     }
   },
   //当选中的不是模型节点的时候，禁用编辑按钮
