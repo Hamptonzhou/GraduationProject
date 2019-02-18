@@ -25,6 +25,9 @@ Mock.setup({
 Mock.mock(/\/login/, login)
 Mock.mock(/\/get_info/, getUserInfo)
 Mock.mock(/\/logout/, logout)
+
+
+
 Mock.mock(/\/get_table_data/, getTableData)
 Mock.mock(/\/save_error_logger/, 'success')
 // Mock.mock(/\/message\/init/, getMessageInit)

@@ -8,7 +8,7 @@
       <Card icon="log-in" title="欢迎登录" :bordered="false">
         <div class="form-con">
           <login-form @on-success-valid="handleSubmit"></login-form>
-          <p class="login-tip">输入任意用户名和密码即可</p>
+          <p class="login-tip">输入有效的用户名和密码</p>
         </div>
       </Card>
     </div>
@@ -27,6 +27,7 @@ export default {
       'handleLogin',
       'getUserInfo'
     ]),
+    //登陆表单子组件传递userName, password到该父组件，在这里进行登陆判断
     handleSubmit ({ userName, password }) {
       this.handleLogin({ userName, password }).then(res => {
         this.getUserInfo().then(res => {
