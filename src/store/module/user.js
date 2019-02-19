@@ -203,7 +203,7 @@ export default {
     handleLogin ({ commit }, {userName, password}) {
       userName = userName.trim()
       return new Promise((resolve, reject) => {
-        //调用自己真实的登陆api进行验证，这里是使用mock
+        //调用自己后台登陆loginApi进行验证，这里是使用mock
         login({
           userName,
           password
