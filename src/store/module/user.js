@@ -204,14 +204,23 @@ export default {
       userName = userName.trim()
       return new Promise((resolve, reject) => {
         //调用自己后台登陆loginApi进行验证，这里是使用mock
-        login({
-          userName,
+        loginApi.login({
+          loginName:userName,
           password
         }).then(res => {
-          console.log(res)
-          const data = res.data
-          commit('setToken', data.token)
-          resolve()
+          if(res.status===0){
+            debugger
+            const data = res.data
+            commit('setToken', data.userId)
+            commit('setAvator', data.avator || "https://file.iviewui.com/dist/a0e88e83800f138b94d2414621bd9704.png")
+            commit('setUserName', data.userInfo.realName)
+            commit('setUserId', data.userId)
+            commit('setAccess', data.userId)
+            commit('setHasGetInfo', true)
+            resolve(res)
+          }else{
+            resolve(res)
+          }
         }).catch(err => {
           reject(err)
         })
@@ -241,7 +250,7 @@ export default {
      // 退出登录
      handleLogOut ({ state, commit }) {
       return new Promise((resolve, reject) => {
-        logout(state.token).then(() => {
+        loginApi.logout().then(() => {
           commit('setToken', '')
           commit('setAccess', [])
           resolve()
