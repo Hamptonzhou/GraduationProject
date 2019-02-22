@@ -23,7 +23,7 @@ export default {
     LoginForm
   },
   methods: {
-    ...mapActions(["handleLogin", "getUserInfo"]),
+    ...mapActions(["handleLogin"]),
     //登陆表单子组件传递userName, password到该父组件，在这里进行登陆判断
     handleSubmit({ userName, password }) {
       this.handleLogin({ userName, password }).then(res => {

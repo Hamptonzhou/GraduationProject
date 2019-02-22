@@ -1,9 +1,9 @@
 import Mock from 'mockjs'
-import {
-  login,
-  logout,
-  getUserInfo
-} from './login'
+// import {
+//   login,
+//   logout,
+//   getUserInfo
+// } from './login'
 import {
   getTableData
 } from './data'
