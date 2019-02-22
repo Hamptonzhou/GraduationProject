@@ -1,13 +1,13 @@
-import {
-  login,
-  logout,
-  getUserInfo,
+// import {
+  // login,
+  // logout,
+  // getUserInfo,
   // getUnreadCount
   // getContentByMsgId,
   // hasRead,
   // removeReaded,
   // restoreTrash,
-} from '@/api/user'
+// } from '@/api/user'
 import { setToken, getToken } from '@/libs/util'
 
 import messageApi from "@/api/message.js";
@@ -227,26 +227,26 @@ export default {
       })
     },
     // 获取用户相关信息
-    getUserInfo ({ state, commit }) {
-      return new Promise((resolve, reject) => {
-        try {
-          getUserInfo(state.token).then(res => {
-            console.log(res)
-            const data = res.data
-            commit('setAvator', data.avator)
-            commit('setUserName', data.name)
-            commit('setUserId', data.user_id)
-            commit('setAccess', data.access)
-            commit('setHasGetInfo', true)
-            resolve(data)
-          }).catch(err => {
-            reject(err)
-          })
-        } catch (error) {
-          reject(error)
-        }
-      })
-    },
+    // getUserInfo ({ state, commit }) {
+    //   return new Promise((resolve, reject) => {
+    //     try {
+    //       getUserInfo(state.token).then(res => {
+    //         console.log(res)
+    //         const data = res.data
+    //         commit('setAvator', data.avator)
+    //         commit('setUserName', data.name)
+    //         commit('setUserId', data.user_id)
+    //         commit('setAccess', data.access)
+    //         commit('setHasGetInfo', true)
+    //         resolve(data)
+    //       }).catch(err => {
+    //         reject(err)
+    //       })
+    //     } catch (error) {
+    //       reject(error)
+    //     }
+    //   })
+    // },
      // 退出登录
      handleLogOut ({ state, commit }) {
       return new Promise((resolve, reject) => {

@@ -1,30 +1,30 @@
-import axios from '@/libs/api.request'
+// import axios from '@/libs/api.request'
 
-export const login = ({userName,password}) => {
-  const data = {userName,password}
-  return axios.request({
-    url: 'login',
-    data,
-    method: 'post'
-  })
-}
+// export const login = ({userName,password}) => {
+//   const data = {userName,password}
+//   return axios.request({
+//     url: 'login',
+//     data,
+//     method: 'post'
+//   })
+// }
 
-export const getUserInfo = (token) => {
-  return axios.request({
-    url: 'get_info',
-    params: {
-      token
-    },
-    method: 'get'
-  })
-}
+// export const getUserInfo = (token) => {
+//   return axios.request({
+//     url: 'get_info',
+//     params: {
+//       token
+//     },
+//     method: 'get'
+//   })
+// }
 
-export const logout = (token) => {
-  return axios.request({
-    url: 'logout',
-    method: 'post'
-  })
-}
+// export const logout = (token) => {
+//   return axios.request({
+//     url: 'logout',
+//     method: 'post'
+//   })
+// }
 
 
 //在这里修改，请求真实的后端消息模块的接口？？？by zhou
