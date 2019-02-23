@@ -2,7 +2,7 @@
   <div>
     <Form inline>
       <FormItem>
-        <Input v-model="keyword" @on-change="searchByKeyword" clearable search enter-button placeholder="操作用户或方法名"
+        <Input v-model="keyword" @on-change="searchByKeyword" clearable search enter-button placeholder="业务受理号或业务名称"
           style="width: 300px" />
       </FormItem>
       <FormItem>
@@ -19,10 +19,11 @@
 </template>
 
 <script>
-import logCollectionApi from "@/api/LogCollection.js";
+import workflowDesignApi from "@/api/workflowDesign.js";
+import { mapState } from "vuex";
 
 export default {
-  name: "logCollection_page",
+  name: "hanglingWork_page",
   data() {
     return {
       columns: [
@@ -42,7 +43,7 @@ export default {
         {
           key: "businessName",
           title: "业务名称",
-          width: 308,
+          width: 300,
           align: "center"
         },
         {
@@ -96,28 +97,25 @@ export default {
       tableHeight: 680
     };
   },
+  computed: {
+    ...mapState({
+      userName: state => state.user.userName
+    })
+  },
   mounted() {
     this.isloading = true;
     this.getTableList();
-    // this.tableHeight = window.innerHeight;
-
-    // console.log(
-    //   this.tableHeight,
-    //   window.innerHeight,
-    //   this.$refs.table.$el.offsetTop
-    // );
   },
 
   methods: {
     getTableList: function() {
       this.isloading = true;
-      logCollectionApi
-        .getOperationLogList(
+      workflowDesignApi
+        .getHanglingWorkList(
           this.currentPage,
           this.pageSize,
-          this.startDate,
-          this.endDate,
-          this.keyword
+          this.keyword,
+          this.userName
         )
         .then(res => {
           this.isloading = false;
