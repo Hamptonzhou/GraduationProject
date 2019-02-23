@@ -209,7 +209,6 @@ export default {
           password
         }).then(res => {
           if(res.status===0){
-            debugger
             const data = res.data
             commit('setToken', data.userId)
             commit('setAvator', data.avator || "https://file.iviewui.com/dist/a0e88e83800f138b94d2414621bd9704.png")
