@@ -2,6 +2,7 @@ import config from './config'
 const baseUrl = config.baseUrl
 
 export default {
+  /**####################################流程设计模块接口#################################### **/
   // 打开流程编辑器
   showWorkflowDesignPage() {
     return config.doGetPromise(baseUrl + '/model/new')
@@ -50,6 +51,38 @@ export default {
   cascadeDeleteDeployment(processDefinitionId) {
     return config.doGetPromise(baseUrl + '/CustomConteoller/cascadeDeleteDeployment', {
       processDefinitionId: processDefinitionId
+    })
+  },
+
+  /**####################################我的工作模块接口#################################### **/
+  //获取在办工作列表
+  getHanglingWorkList(page, rows, keyword, userName) {
+    return config.doGetPromise(baseUrl + '/CustomConteoller/getMyWorkListBySearchText', {
+      page: page,
+      rows: rows,
+      keyword: keyword,
+      queryId: 'tijs',
+      searchText: 'HanglingWork'
+    })
+  },
+  //获取办结工作列表
+  getFinishedWorkList(page, rows, keyword, userName) {
+    return config.doGetPromise(baseUrl + '/CustomConteoller/getMyWorkListBySearchText', {
+      page: page,
+      rows: rows,
+      keyword: keyword,
+      queryId: 'tijs',
+      searchText: 'FinishedWork'
+    })
+  },
+  //获取个人已办理的工作列表
+  getPersonalDoneWorkList(page, rows, keyword, userName) {
+    return config.doGetPromise(baseUrl + '/CustomConteoller/getMyWorkListBySearchText', {
+      page: page,
+      rows: rows,
+      keyword: keyword,
+      queryId: 'tijs',
+      searchText: 'PersonalDoneWork'
     })
   },
 }
