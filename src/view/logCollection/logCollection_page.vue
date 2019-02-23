@@ -5,50 +5,21 @@
         <Button @click="exportData" type="primary" style="margin: 0 10px 10px 0;">导出日志记录</Button>
       </FormItem>
       <FormItem>
-        <DatePicker
-          type="daterange"
-          split-panels
-          placeholder="筛选日期"
-          style="width: 200px"
-          @on-change="handleChange"
-        ></DatePicker>
+        <DatePicker type="daterange" split-panels placeholder="筛选日期" style="width: 200px" @on-change="handleChange"></DatePicker>
       </FormItem>
       <FormItem>
-        <Input
-          v-model="keyword"
-          @on-change="searchByKeyword"
-          clearable
-          search
-          enter-button
-          placeholder="操作用户或方法名"
-          style="width: 300px"
-        />
+        <Input v-model="keyword" @on-change="searchByKeyword" clearable search enter-button placeholder="操作用户或方法名"
+          style="width: 300px" />
       </FormItem>
       <FormItem>
         <Button shape="circle" icon="md-refresh" @click="getLogList"></Button>
       </FormItem>
     </Form>
 
-    <Table
-      border
-      stripe
-      :loading="isloading"
-      @on-row-dblclick="getRowClick"
-      ref="table"
-      :height="tableHeight"
-      :columns="columns"
-      :data="logList"
-    ></Table>
-    <Page
-      :total="total"
-      show-elevator
-      show-sizer
-      show-total
-      :page-size="50"
-      :page-size-opts="[30, 50, 100]"
-      @on-change="getCurrentPage"
-      @on-page-size-change="getPageSize"
-    />
+    <Table border stripe :loading="isloading" @on-row-dblclick="getRowClick" ref="table" :height="tableHeight" :columns="columns"
+      :data="logList"></Table>
+    <Page :total="total" show-elevator show-sizer show-total :page-size="50" :page-size-opts="[30, 50, 100]" @on-change="getCurrentPage"
+      @on-page-size-change="getPageSize" />
     <Modal v-model="isShow" title="日志详情">
       <div>操作用户：{{ LogDetail.realName}}</div>
       <div>用户ID：{{ LogDetail.userId}}</div>
@@ -168,12 +139,12 @@ export default {
             this.total = res.data.total;
           } else {
             this.isloading = false;
-            console.log("else-无法获取列表");
+            this.$Message.error("else-请求服务器异常");
           }
         })
         .catch(err => {
           this.isloading = false;
-          console.log("catch-无法获取列表");
+          this.$Message.error("else-请求服务器异常");
         });
     },
 
