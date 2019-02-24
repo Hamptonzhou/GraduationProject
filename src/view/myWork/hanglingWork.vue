@@ -2,26 +2,27 @@
   <div>
     <Form inline>
       <FormItem>
-        <Button @click="exportData" type="primary">查看流程状态</Button>
-      </FormItem>
-      <FormItem>
-        <Button @click="exportData" type="primary">查看业务表单</Button>
-      </FormItem>
-      <FormItem>
-        <Button @click="exportData" type="primary">提交</Button>
-      </FormItem>
-      <FormItem>
-        <Button @click="exportData" type="primary">签收</Button>
-      </FormItem>
-      <FormItem>
         <Input v-model="keyword" @on-change="searchByKeyword" clearable search enter-button placeholder="业务受理号或业务名称"
           style="width: 300px" />
       </FormItem>
       <FormItem>
+        <Button @click="getProcessImage" type="primary">查看流程状态</Button>
+      </FormItem>
+      <FormItem>
+        <Button @click="getBusinessForm" type="primary">查看业务表单</Button>
+      </FormItem>
+      <FormItem>
+        <Button @click="submitTask" type="primary">提交</Button>
+      </FormItem>
+      <FormItem>
+        <Button @click="claimTask" type="primary">接办</Button>
+      </FormItem>
+
+      <FormItem>
         <Button shape="circle" icon="md-refresh" @click="getTableList"></Button>
       </FormItem>
     </Form>
-    <Table border :size="large" :loading="isloading" highlight-row @on-current-change="getCurrentRow" @on-row-dblclick="getRowClick"
+    <Table border :loading="isloading" highlight-row @on-current-change="getCurrentRow" @on-row-dblclick="getRowClick"
       :height="tableHeight" :columns="columns" :data="tableList"></Table>
     <Page :total="total" show-elevator show-sizer show-total :page-size="50" :page-size-opts="[30, 50, 100]" @on-change="getCurrentPage"
       @on-page-size-change="getPageSize" />
@@ -71,6 +72,12 @@ export default {
           align: "center"
         },
         {
+          key: "taskType",
+          title: "环节类型",
+          width: 150,
+          align: "center"
+        },
+        {
           key: "taskStartTime",
           title: "环节开始时间",
           width: 150,
@@ -82,18 +89,11 @@ export default {
           width: 150,
           align: "center"
         },
-
         {
-          key: "processDefinitionImage",
-          title: "查看流程状态",
+          key: "remark",
+          title: "备注信息",
           width: 150,
           align: "center"
-        },
-        {
-          key: "businessForm",
-          title: "查看业务表单",
-          align: "center",
-          width: 150
         }
       ],
       isloading: false,
@@ -106,6 +106,7 @@ export default {
       keyword: null,
       isShow: false,
       LogDetail: {},
+      processInstanceId: null,
       tableHeight: 680
     };
   },
@@ -144,11 +145,10 @@ export default {
           this.$Message.error("catch-请求服务器异常");
         });
     },
-    getCurrentRow() {
-      //点击某一行时，获取当前行的数据，然后才进行提交接办等操作
-      this.$Message.info("赋值逻辑：this.标识 =  ");
+    //点击某一行时，获取当前行业务受理号(流程实例id)
+    getCurrentRow(currentRow) {
+      this.processInstanceId = currentRow.businessAcceptNumber;
     },
-
     //双击时，显示详细信息
     getRowClick(rowData) {
       this.isShow = true;
@@ -168,6 +168,31 @@ export default {
     getPageSize(pageSize) {
       this.pageSize = pageSize;
       this.getTableList();
+    },
+    //查看流程图片
+    getProcessImage() {
+      if (this.processInstanceId === null) {
+        this.$Message.info("请选择一项工作");
+      } else {
+        this.$Message.info(this.processInstanceId + "的查看流程图片");
+      }
+    },
+    //查看业务表单
+    getBusinessForm() {
+      this.$Message.info(this.processInstanceId + "查看业务表单");
+    },
+    //提交环节
+    submitTask() {
+      this.$Message.info(
+        this.processInstanceId +
+          "由此流程实例id查询execution表，查表中的活动环节，活动环节就在ru_task中，获取到该环节id即可提交环节"
+      );
+    },
+    //接办环节
+    claimTask() {
+      this.$Message.info(
+        "同上获取到taskid，交给后台claim(taskId, userId)接办环节"
+      );
     }
   }
 };
