@@ -2,6 +2,18 @@
   <div>
     <Form inline>
       <FormItem>
+        <Button @click="exportData" type="primary">查看流程状态</Button>
+      </FormItem>
+      <FormItem>
+        <Button @click="exportData" type="primary">查看业务表单</Button>
+      </FormItem>
+      <FormItem>
+        <Button @click="exportData" type="primary">提交</Button>
+      </FormItem>
+      <FormItem>
+        <Button @click="exportData" type="primary">签收</Button>
+      </FormItem>
+      <FormItem>
         <Input v-model="keyword" @on-change="searchByKeyword" clearable search enter-button placeholder="业务受理号或业务名称"
           style="width: 300px" />
       </FormItem>
@@ -9,7 +21,7 @@
         <Button shape="circle" icon="md-refresh" @click="getTableList"></Button>
       </FormItem>
     </Form>
-    <Table border :loading="isloading" highlight-row @on-current-change="getCurrentRow" @on-row-dblclick="getRowClick"
+    <Table border :size="large" :loading="isloading" highlight-row @on-current-change="getCurrentRow" @on-row-dblclick="getRowClick"
       :height="tableHeight" :columns="columns" :data="tableList"></Table>
     <Page :total="total" show-elevator show-sizer show-total :page-size="50" :page-size-opts="[30, 50, 100]" @on-change="getCurrentPage"
       @on-page-size-change="getPageSize" />
@@ -23,7 +35,7 @@ import workflowDesignApi from "@/api/workflowDesign.js";
 import { mapState } from "vuex";
 
 export default {
-  name: "hanglingWork_page",
+  name: "handlingWork_page",
   data() {
     return {
       columns: [
@@ -134,7 +146,7 @@ export default {
     },
     getCurrentRow() {
       //点击某一行时，获取当前行的数据，然后才进行提交接办等操作
-      this.$Message.info("对当前行进行提交或者接办等操作");
+      this.$Message.info("赋值逻辑：this.标识 =  ");
     },
 
     //双击时，显示详细信息
