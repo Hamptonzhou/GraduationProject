@@ -6,6 +6,12 @@
           style="width: 300px" />
       </FormItem>
       <FormItem>
+        <Button @click="getProcessImage" type="primary">查看流程状态</Button>
+      </FormItem>
+      <FormItem>
+        <Button @click="getBusinessForm" type="primary">查看业务表单</Button>
+      </FormItem>
+      <FormItem>
         <Button shape="circle" icon="md-refresh" @click="getTableList"></Button>
       </FormItem>
     </Form>
@@ -53,35 +59,22 @@ export default {
           align: "center"
         },
         {
-          key: "taskName",
-          title: "环节名称",
+          key: "businessEndTime",
+          title: "业务结束时间",
+          width: 150,
+          align: "center"
+        },
+        {
+          key: "durationTime",
+          title: "业务耗时",
+          width: 150,
+          align: "center"
+        },
+        {
+          key: "remark",
+          title: "备注信息",
           width: 300,
           align: "center"
-        },
-        {
-          key: "taskStartTime",
-          title: "环节开始时间",
-          width: 150,
-          align: "center"
-        },
-        {
-          key: "claimTime",
-          title: "接办时间",
-          width: 150,
-          align: "center"
-        },
-
-        {
-          key: "processDefinitionImage",
-          title: "查看流程状态",
-          width: 150,
-          align: "center"
-        },
-        {
-          key: "businessForm",
-          title: "查看业务表单",
-          align: "center",
-          width: 150
         }
       ],
       isloading: false,
@@ -156,6 +149,14 @@ export default {
     getPageSize(pageSize) {
       this.pageSize = pageSize;
       this.getTableList();
+    },
+    //查看流程图片
+    getProcessImage() {
+      this.$Message.info("查看流程图片");
+    },
+    //查看业务表单
+    getBusinessForm() {
+      this.$Message.info("查看业务表单");
     }
   }
 };
