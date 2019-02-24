@@ -28,6 +28,6 @@ export default {
   myWork: '我的工作',
   handlingWork_page: '在办工作',
   personalDoneWork_page: '个人已办',
-  finishedWork_page: '办结工作',
+  finishedWork_page: '办结业务',
   workflowDesigne_page:'流程设计'
 }

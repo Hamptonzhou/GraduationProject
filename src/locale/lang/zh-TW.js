@@ -49,7 +49,7 @@ export default {
   myWork: '我的工作',
   handlingWork_page: '在辦工作',
   personalDoneWork_page: '個人已辦',
-  finishedWork_page: '辦結工作',
+  finishedWork_page: '辦結业务',
   workflowDesigne_page:'流程設計'
 
 }

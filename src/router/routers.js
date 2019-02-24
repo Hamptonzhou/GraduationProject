@@ -162,7 +162,7 @@ export default [{
         name: 'finishedWork_page',
         meta: {
           icon: 'md-checkbox',
-          title: '办结工作'
+          title: '办结业务'
         },
         component: () => import('@/view/myWork/finishedWork.vue')
       }

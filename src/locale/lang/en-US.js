@@ -49,6 +49,6 @@ export default {
   myWork: 'My Work',
   handlingWork_page: 'Handling Work',
   personalDoneWork_page: 'Personal Worked',
-  finishedWork_page: 'Finished Work',
+  finishedWork_page: 'Finished Business',
   workflowDesigne_page:'Workflow Designe'
 }
