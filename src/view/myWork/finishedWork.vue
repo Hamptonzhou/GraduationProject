@@ -23,7 +23,7 @@ import workflowDesignApi from "@/api/workflowDesign.js";
 import { mapState } from "vuex";
 
 export default {
-  name: "hanglingWork_page",
+  name: "finishedWork_page",
   data() {
     return {
       columns: [
