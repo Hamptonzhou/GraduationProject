@@ -2,7 +2,7 @@
   <div>
     <Form inline>
       <FormItem>
-        <Button @click="exportData" type="primary" style="margin: 0 10px 10px 0;">导出日志记录</Button>
+        <Button @click="exportData" type="primary">导出日志记录</Button>
       </FormItem>
       <FormItem>
         <DatePicker type="daterange" split-panels placeholder="筛选日期" style="width: 200px" @on-change="handleChange"></DatePicker>
