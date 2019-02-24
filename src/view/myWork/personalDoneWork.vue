@@ -6,6 +6,12 @@
           style="width: 300px" />
       </FormItem>
       <FormItem>
+        <Button @click="getProcessImage" type="primary">查看流程状态</Button>
+      </FormItem>
+      <FormItem>
+        <Button @click="getBusinessForm" type="primary">查看业务表单</Button>
+      </FormItem>
+      <FormItem>
         <Button shape="circle" icon="md-refresh" @click="getTableList"></Button>
       </FormItem>
     </Form>
@@ -136,7 +142,6 @@ export default {
       //点击某一行时，获取当前行的数据，然后才进行提交接办等操作
       this.$Message.info("对当前行进行提交或者接办等操作");
     },
-
     //双击时，显示详细信息
     getRowClick(rowData) {
       this.isShow = true;
@@ -156,6 +161,14 @@ export default {
     getPageSize(pageSize) {
       this.pageSize = pageSize;
       this.getTableList();
+    },
+    //查看流程图片
+    getProcessImage() {
+      this.$Message.info("查看流程图片");
+    },
+    //查看业务表单
+    getBusinessForm() {
+      this.$Message.info("查看业务表单");
     }
   }
 };
