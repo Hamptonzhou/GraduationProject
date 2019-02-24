@@ -23,7 +23,7 @@ import workflowDesignApi from "@/api/workflowDesign.js";
 import { mapState } from "vuex";
 
 export default {
-  name: "hanglingWork_page",
+  name: "personalDoneWork_page",
   data() {
     return {
       columns: [
@@ -72,14 +72,14 @@ export default {
         },
 
         {
-          key: "processDefinitionImage",
-          title: "查看流程状态",
+          key: "taskEndTime",
+          title: "结束处理时间",
           width: 150,
           align: "center"
         },
         {
-          key: "businessForm",
-          title: "查看业务表单",
+          key: "durationTime",
+          title: "处理耗时",
           align: "center",
           width: 150
         }
