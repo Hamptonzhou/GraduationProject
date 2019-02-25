@@ -1,5 +1,8 @@
 <template>
   <div>
+    <Modal title="流程状态" width="600" v-model="showImageModal" @on-cancel="showImageModal=false">
+      <img :src='image'>
+    </Modal>
     <Form inline>
       <FormItem>
         <Input v-model="keyword" @on-change="searchByKeyword" clearable search enter-button placeholder="业务受理号或业务名称"
@@ -12,12 +15,14 @@
         <Button @click="getBusinessForm" type="primary">查看业务表单</Button>
       </FormItem>
       <FormItem>
-        <Button @click="submitTask" type="primary">提交</Button>
+        <Button @click="submitTask" type="primary">提 交</Button>
       </FormItem>
       <FormItem>
-        <Button @click="claimTask" type="primary">接办</Button>
+        <Button @click="claimTask" :disabled="disabledClaim" type="primary">接 办</Button>
       </FormItem>
-
+      <FormItem>
+        <Button @click="unClaimTask" :disabled="disabledClaim" type="primary">退 办</Button>
+      </FormItem>
       <FormItem>
         <Button shape="circle" icon="md-refresh" @click="getTableList"></Button>
       </FormItem>
@@ -39,6 +44,7 @@ export default {
   name: "handlingWork_page",
   data() {
     return {
+      showImageModal: false, // 显示模态框
       columns: [
         {
           type: "index",
@@ -94,6 +100,19 @@ export default {
           title: "备注信息",
           width: 150,
           align: "center"
+        },
+        //隐藏列，用于记录taskId方便操作
+        {
+          title: "0",
+          key: "taskId",
+          width: 1,
+          render: (h, params) => {
+            return h("span", {
+              style: {
+                display: "none"
+              }
+            });
+          }
         }
       ],
       isloading: false,
@@ -106,13 +125,17 @@ export default {
       keyword: null,
       isShow: false,
       LogDetail: {},
+      taskId: null,
       processInstanceId: null,
-      tableHeight: 680
+      disabledClaim: false,
+      tableHeight: 680,
+      image: null
     };
   },
   computed: {
     ...mapState({
-      userName: state => state.user.userName
+      userName: state => state.user.userName,
+      userId: state => state.user.userId
     })
   },
   mounted() {
@@ -145,15 +168,24 @@ export default {
           this.$Message.error("catch-请求服务器异常");
         });
     },
-    //点击某一行时，获取当前行业务受理号(流程实例id)
+    //点击某一行时
     getCurrentRow(currentRow) {
+      //获取流程实例ID
       this.processInstanceId = currentRow.businessAcceptNumber;
+      //获取taskID
+      this.taskId = currentRow.taskId;
+      //获取task类型，组任务可以使用接办按钮，个人任务禁用接办按钮
+      const taskType = currentRow.taskType;
+      if (taskType === "个人任务") {
+        this.disabledClaim = true;
+      } else {
+        this.disabledClaim = false;
+      }
     },
     //双击时，显示详细信息
     getRowClick(rowData) {
       this.isShow = true;
       this.LogDetail = rowData;
-      console.log(rowData);
     },
     //搜索框内容变化时，根据关键字立即调用搜索
     searchByKeyword() {
@@ -174,25 +206,82 @@ export default {
       if (this.processInstanceId === null) {
         this.$Message.info("请选择一项工作");
       } else {
-        this.$Message.info(this.processInstanceId + "的查看流程图片");
+        workflowDesignApi
+          .getProcessImage(this.processInstanceId)
+          .then(res => {
+            if (res.status === 0) {
+              if (typeof res.data.image !== "undefined") {
+                this.image = "data:image/png;base64," + res.data.image;
+                this.showImageModal = true;
+              }
+            } else {
+              this.$Message.error("else-无法获取流程图片");
+            }
+          })
+          .catch(err => {
+            this.$Message.error("catch-请求服务器异常");
+          });
       }
     },
     //查看业务表单
     getBusinessForm() {
       this.$Message.info(this.processInstanceId + "查看业务表单");
     },
-    //提交环节
+    //提交任务
     submitTask() {
-      this.$Message.info(
-        this.processInstanceId +
-          "由此流程实例id查询execution表，查表中的活动环节，活动环节就在ru_task中，获取到该环节id即可提交环节"
-      );
+      workflowDesignApi
+        .completeTask(this.taskId)
+        .then(res => {
+          if (res.status === 0) {
+            this.getTableList();
+            this.$Modal.success({
+              title: "成功",
+              content: "提交任务成功!"
+            });
+          } else {
+            this.$Message.error(res.message);
+          }
+        })
+        .catch(err => {
+          this.$Message.error("catch-请求服务器异常");
+        });
     },
-    //接办环节
+    //接办任务
     claimTask() {
-      this.$Message.info(
-        "同上获取到taskid，交给后台claim(taskId, userId)接办环节"
-      );
+      workflowDesignApi
+        // .claimTask(this.taskId, this.userId)
+        .claimTask(this.taskId, "tijs")
+        .then(res => {
+          if (res.status === 0) {
+            this.$Modal.success({
+              title: "成功",
+              content: "接办任务成功!"
+            });
+          } else {
+            this.$Message.error(res.message);
+          }
+        })
+        .catch(err => {
+          this.$Message.error("catch-请求服务器异常");
+        });
+    },
+    //退办任务
+    unClaimTask() {
+      workflowDesignApi
+        .claimTask(this.taskId, null)
+        .then(res => {
+          if (res.status === 0) {
+            this.$Modal.success({
+              title: "成功",
+              content: "退办任务成功!该任务已对其他组元可见。"
+            });
+          } else {
+            this.$Message.error(res.message);
+          }
+        })
+        .catch(err => {
+          this.$Message.error("catch-请求服务器异常");
+        });
     }
   }
 };
