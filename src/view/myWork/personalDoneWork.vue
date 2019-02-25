@@ -146,7 +146,6 @@ export default {
     getRowClick(rowData) {
       this.isShow = true;
       this.LogDetail = rowData;
-      console.log(rowData);
     },
     //搜索框内容变化时，根据关键字立即调用搜索
     searchByKeyword() {
