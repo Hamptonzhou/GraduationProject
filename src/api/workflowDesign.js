@@ -85,4 +85,23 @@ export default {
       searchText: 'PersonalDoneWork'
     })
   },
+  //获取流程状态图
+  getProcessImage(processInstanceId) {
+    return config.doGetPromise(baseUrl + '/CustomConteoller/getProcessImage', {
+      queryId: processInstanceId
+    })
+  },
+  //接办任务
+  claimTask(taskId, userId) {
+    return config.doGetPromise(baseUrl + '/CustomConteoller/claimTask', {
+      taskId,
+      userId
+    })
+  },
+  //完成任务
+  completeTask(taskId) {
+    return config.doGetPromise(baseUrl + '/CustomConteoller/completeTask', {
+      taskId
+    })
+  },
 }
