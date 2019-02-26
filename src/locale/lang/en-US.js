@@ -47,8 +47,9 @@ export default {
   formDesigner_page: 'Form Designer',
   message_page: 'Message Center',
   myWork: 'My Work',
+  createWork_page: 'Create Work',
   handlingWork_page: 'Handling Work',
   personalDoneWork_page: 'Personal Worked',
   finishedWork_page: 'Finished Business',
-  workflowDesigne_page:'Workflow Designe'
+  workflowDesigne_page: 'Workflow Designe'
 }
