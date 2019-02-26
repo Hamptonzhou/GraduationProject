@@ -9,7 +9,7 @@
           style="width: 300px" />
       </FormItem>
       <FormItem>
-        <Button @click="getProcessImage" type="primary">查看流程状态</Button>
+        <Button @click="getProcessImage" type="primary" :loading="loadingImage">查看流程状态</Button>
       </FormItem>
       <FormItem>
         <Button @click="getBusinessForm" type="primary">查看业务表单</Button>
@@ -27,11 +27,12 @@
         <Button shape="circle" icon="md-refresh" @click="getTableList"></Button>
       </FormItem>
     </Form>
-    <Table border :loading="isloading" highlight-row @on-current-change="getCurrentRow" @on-row-dblclick="getRowClick"
+    <Table border size="large" :loading="isloading" highlight-row @on-current-change="getCurrentRow" @on-row-dblclick="getDoubleClick"
       :height="tableHeight" :columns="columns" :data="tableList"></Table>
-    <Page :total="total" show-elevator show-sizer show-total :page-size="50" :page-size-opts="[30, 50, 100]" @on-change="getCurrentPage"
+    <Page :total="total" show-elevator show-sizer show-total :page-size="30" :page-size-opts="[30, 50, 100]" @on-change="getCurrentPage"
       @on-page-size-change="getPageSize" />
-    <Modal v-model="isShow" title="在办工作详情">
+    <Modal v-model="showDoubleClickModal" title="业务流程备注信息" @on-ok="confirmRemark">
+      <textarea ref="remarkTextarea" cols="80" rows="10" autofocus placeholder="请填写业务流程备注信息"></textarea>
     </Modal>
   </div>
 </template>
@@ -44,11 +45,10 @@ export default {
   name: "handlingWork_page",
   data() {
     return {
-      showImageModal: false, // 显示模态框
       columns: [
         {
           type: "index",
-          width: 100,
+          width: 70,
           align: "center"
         },
         {
@@ -62,19 +62,19 @@ export default {
         {
           key: "businessName",
           title: "业务名称",
-          width: 300,
+          width: 250,
           align: "center"
         },
         {
           key: "businessStartTime",
           title: "业务开始时间",
-          width: 150,
+          width: 170,
           align: "center"
         },
         {
           key: "taskName",
           title: "环节名称",
-          width: 300,
+          width: 250,
           align: "center"
         },
         {
@@ -86,20 +86,21 @@ export default {
         {
           key: "taskStartTime",
           title: "环节开始时间",
-          width: 150,
+          width: 170,
           align: "center"
         },
         {
           key: "claimTime",
           title: "接办时间",
-          width: 150,
+          width: 170,
           align: "center"
         },
         {
-          key: "remark",
           title: "备注信息",
-          width: 150,
-          align: "center"
+          key: "remarkContent",
+          width: 200,
+          align: "center",
+          className: "zzz"
         },
         //隐藏列，用于记录taskId方便操作
         {
@@ -123,13 +124,15 @@ export default {
       startDate: null,
       endDate: null,
       keyword: null,
-      isShow: false,
-      LogDetail: {},
+      showDoubleClickModal: false,
       taskId: null,
       processInstanceId: null,
       disabledClaim: false,
       tableHeight: 680,
-      image: null
+      image: null,
+      taskType: null,
+      showImageModal: false,
+      loadingImage: false
     };
   },
   computed: {
@@ -146,6 +149,7 @@ export default {
   methods: {
     getTableList: function() {
       this.isloading = true;
+      this.processInstanceId = null;
       workflowDesignApi
         .getHanglingWorkList(
           this.currentPage,
@@ -175,17 +179,17 @@ export default {
       //获取taskID
       this.taskId = currentRow.taskId;
       //获取task类型，组任务可以使用接办按钮，个人任务禁用接办按钮
-      const taskType = currentRow.taskType;
-      if (taskType === "个人任务") {
+      this.taskType = currentRow.taskType;
+      if (this.taskType === "个人任务") {
         this.disabledClaim = true;
       } else {
         this.disabledClaim = false;
       }
     },
-    //双击时，显示详细信息
-    getRowClick(rowData) {
-      this.isShow = true;
-      this.LogDetail = rowData;
+    //双击时,显示备注信息
+    getDoubleClick(currentRow) {
+      this.showDoubleClickModal = true;
+      this.$refs.remarkTextarea.value = currentRow.remarkContent;
     },
     //搜索框内容变化时，根据关键字立即调用搜索
     searchByKeyword() {
@@ -203,8 +207,10 @@ export default {
     },
     //查看流程图片
     getProcessImage() {
+      this.loadingImage = true;
       if (this.processInstanceId === null) {
         this.$Message.info("请选择一项工作");
+        this.loadingImage = false;
       } else {
         workflowDesignApi
           .getProcessImage(this.processInstanceId)
@@ -212,14 +218,17 @@ export default {
             if (res.status === 0) {
               if (typeof res.data.image !== "undefined") {
                 this.image = "data:image/png;base64," + res.data.image;
+                this.loadingImage = false;
                 this.showImageModal = true;
               }
             } else {
               this.$Message.error("else-无法获取流程图片");
+              this.loadingImage = false;
             }
           })
           .catch(err => {
             this.$Message.error("catch-请求服务器异常");
+            this.loadingImage = false;
           });
       }
     },
@@ -229,22 +238,26 @@ export default {
     },
     //提交任务
     submitTask() {
-      workflowDesignApi
-        .completeTask(this.taskId)
-        .then(res => {
-          if (res.status === 0) {
-            this.getTableList();
-            this.$Modal.success({
-              title: "成功",
-              content: "提交任务成功!"
-            });
-          } else {
-            this.$Message.error(res.message);
-          }
-        })
-        .catch(err => {
-          this.$Message.error("catch-请求服务器异常");
-        });
+      if (this.taskType.includes("未接办")) {
+        this.$Message.info("所选任务尚未接办，无法提交！");
+      } else {
+        workflowDesignApi
+          .completeTask(this.taskId)
+          .then(res => {
+            if (res.status === 0) {
+              this.getTableList();
+              this.$Modal.success({
+                title: "成功",
+                content: "提交任务成功!"
+              });
+            } else {
+              this.$Message.error(res.message);
+            }
+          })
+          .catch(err => {
+            this.$Message.error("catch-请求服务器异常");
+          });
+      }
     },
     //接办任务
     claimTask() {
@@ -267,21 +280,47 @@ export default {
     },
     //退办任务
     unClaimTask() {
-      workflowDesignApi
-        .claimTask(this.taskId, null)
-        .then(res => {
-          if (res.status === 0) {
-            this.$Modal.success({
-              title: "成功",
-              content: "退办任务成功!该任务已对其他组元可见。"
-            });
-          } else {
-            this.$Message.error(res.message);
-          }
-        })
-        .catch(err => {
-          this.$Message.error("catch-请求服务器异常");
-        });
+      if (this.taskType.includes("未接办")) {
+        this.$Message.info("所选任务尚未接办，无法退办！");
+      } else {
+        workflowDesignApi
+          .claimTask(this.taskId, null)
+          .then(res => {
+            if (res.status === 0) {
+              this.$Modal.success({
+                title: "成功",
+                content: "退办任务成功!该任务已对其他组元可见。"
+              });
+            } else {
+              this.$Message.error(res.message);
+            }
+          })
+          .catch(err => {
+            this.$Message.error("catch-请求服务器异常");
+          });
+      }
+    },
+    //确认时，保存备注内容
+    confirmRemark() {
+      if (this.$refs.remarkTextarea.value === "") {
+        return;
+      } else {
+        workflowDesignApi
+          .setRemarkContent(this.taskId, this.$refs.remarkTextarea.value)
+          .then(res => {
+            if (res.status === 0) {
+              this.$Modal.success({
+                title: "成功",
+                content: "设置备注信息成功!"
+              });
+            } else {
+              this.$Message.error(res.message);
+            }
+          })
+          .catch(err => {
+            this.$Message.error("catch-请求服务器异常");
+          });
+      }
     }
   }
 };
@@ -290,5 +329,10 @@ export default {
 <style scoped>
 .ivu-btn {
   border-color: #fff;
+}
+.ivu-table td.zzz {
+  font-size: 50px;
+  background-color: red;
+  color: red;
 }
 </style>
