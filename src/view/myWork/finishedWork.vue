@@ -1,12 +1,15 @@
 <template>
   <div>
+    <Modal title="流程状态" width="600" v-model="showImageModal" @on-cancel="showImageModal=false">
+      <img :src='image'>
+    </Modal>
     <Form inline>
       <FormItem>
         <Input v-model="keyword" @on-change="searchByKeyword" clearable search enter-button placeholder="业务受理号或业务名称"
           style="width: 300px" />
       </FormItem>
       <FormItem>
-        <Button @click="getProcessImage" type="primary">查看流程状态</Button>
+        <Button @click="getProcessImage" type="primary" :loading="loadingImage">查看业务流程</Button>
       </FormItem>
       <FormItem>
         <Button @click="getBusinessForm" type="primary">查看业务表单</Button>
@@ -15,11 +18,12 @@
         <Button shape="circle" icon="md-refresh" @click="getTableList"></Button>
       </FormItem>
     </Form>
-    <Table border :loading="isloading" highlight-row @on-current-change="getCurrentRow" @on-row-dblclick="getRowClick"
+    <Table border size="large" :loading="isloading" highlight-row @on-current-change="getCurrentRow" @on-row-dblclick="getDoubleClick"
       :height="tableHeight" :columns="columns" :data="tableList"></Table>
-    <Page :total="total" show-elevator show-sizer show-total :page-size="50" :page-size-opts="[30, 50, 100]" @on-change="getCurrentPage"
+    <Page :total="total" show-elevator show-sizer show-total :page-size="30" :page-size-opts="[30, 50, 100]" @on-change="getCurrentPage"
       @on-page-size-change="getPageSize" />
-    <Modal v-model="isShow" title="在办工作详情">
+    <Modal v-model="showDoubleClickModal" title="业务流程备注信息">
+      <textarea ref="remarkTextarea" cols="80" rows="10" autofocus placeholder="无备注信息"></textarea>
     </Modal>
   </div>
 </template>
@@ -49,32 +53,33 @@ export default {
         {
           key: "businessName",
           title: "业务名称",
-          width: 300,
+          width: 250,
           align: "center"
         },
         {
           key: "businessStartTime",
           title: "业务开始时间",
-          width: 150,
+          width: 200,
           align: "center"
         },
         {
           key: "businessEndTime",
           title: "业务结束时间",
-          width: 150,
+          width: 200,
           align: "center"
         },
         {
           key: "durationTime",
           title: "业务耗时",
-          width: 150,
+          width: 200,
           align: "center"
         },
         {
-          key: "remark",
           title: "备注信息",
+          key: "remarkContent",
           width: 300,
-          align: "center"
+          align: "center",
+          className: "zzz"
         }
       ],
       isloading: false,
@@ -86,8 +91,12 @@ export default {
       endDate: null,
       keyword: null,
       isShow: false,
-      LogDetail: {},
-      tableHeight: 680
+      tableHeight: 680,
+      showDoubleClickModal: false,
+      image: null,
+      showImageModal: false,
+      loadingImage: false,
+      image: null
     };
   },
   computed: {
@@ -125,15 +134,16 @@ export default {
           this.$Message.error("catch-请求服务器异常");
         });
     },
-    getCurrentRow() {
-      //点击某一行时，获取当前行的数据，然后才进行提交接办等操作
-      this.$Message.info("对当前行进行提交或者接办等操作");
+    //点击某一行时
+    getCurrentRow(currentRow) {
+      //获取流程实例ID
+      this.processInstanceId = currentRow.businessAcceptNumber;
     },
 
     //双击时，显示详细信息
-    getRowClick(rowData) {
-      this.isShow = true;
-      this.LogDetail = rowData;
+    getDoubleClick(currentRow) {
+      this.showDoubleClickModal = true;
+      this.$refs.remarkTextarea.value = currentRow.remarkContent;
     },
     //搜索框内容变化时，根据关键字立即调用搜索
     searchByKeyword() {
@@ -151,7 +161,30 @@ export default {
     },
     //查看流程图片
     getProcessImage() {
-      this.$Message.info("查看流程图片");
+      this.loadingImage = true;
+      if (this.processInstanceId === null) {
+        this.$Message.info("请选择一项工作");
+        this.loadingImage = false;
+      } else {
+        workflowDesignApi
+          .getProcessImage(this.processInstanceId)
+          .then(res => {
+            if (res.status === 0) {
+              if (typeof res.data.image !== "undefined") {
+                this.image = "data:image/png;base64," + res.data.image;
+                this.loadingImage = false;
+                this.showImageModal = true;
+              }
+            } else {
+              this.$Message.error("else-无法获取流程图片");
+              this.loadingImage = false;
+            }
+          })
+          .catch(err => {
+            this.$Message.error("catch-请求服务器异常");
+            this.loadingImage = false;
+          });
+      }
     },
     //查看业务表单
     getBusinessForm() {
@@ -164,5 +197,10 @@ export default {
 <style scoped>
 .ivu-btn {
   border-color: #fff;
+}
+.ivu-table td.zzz {
+  font-size: 50px;
+  background-color: red;
+  color: red;
 }
 </style>
