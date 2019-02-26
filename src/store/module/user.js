@@ -12,6 +12,7 @@ import { setToken, getToken } from '@/libs/util'
 
 import messageApi from "@/api/message.js";
 import loginApi from "@/api/login.js";
+import minLogo from '@/assets/images/myLogo.png'
 
 export default {
   state: {
@@ -211,7 +212,8 @@ export default {
           if(res.status===0){
             const data = res.data
             commit('setToken', data.userId)
-            commit('setAvator', data.avator || "https://file.iviewui.com/dist/a0e88e83800f138b94d2414621bd9704.png")
+            // commit('setAvator', data.avator || "https://file.iviewui.com/dist/a0e88e83800f138b94d2414621bd9704.png")
+            commit('setAvator', data.avator || minLogo)
             commit('setUserName', data.userInfo.realName)
             commit('setUserId', data.userId)
             commit('setAccess', data.userId)
