@@ -104,4 +104,11 @@ export default {
       taskId
     })
   },
+  //设置备注内容
+  setRemarkContent(taskId, remarkContent) {
+    return config.doPostPromise(baseUrl + '/CustomConteoller/setRemarkContent', {
+      taskId,
+      remarkContent
+    })
+  }
 }
