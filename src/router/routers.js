@@ -54,6 +54,7 @@ export default [{
 
 
   // ################################################################毕设开发################################################################
+  //首页
   {
     path: '/',
     name: '_home',
@@ -75,62 +76,7 @@ export default [{
       component: () => import('@/view/home')
     }]
   },
-  {
-    path: '/log',
-    name: 'log',
-    meta: {
-      hideInBread: true,
-      hideInMenu: false
-    },
-    component: Main,
-    children: [{
-      path: 'logCollection_page',
-      name: 'logCollection_page',
-      meta: {
-        icon: 'ios-bug',
-        title: '日志收集',
-        beforeCloseName: 'before_close_normal'
-      },
-      component: () => import('@/view/logCollection/logCollection_page.vue')
-    }]
-  },
-
-  {
-    path: '/organization',
-    name: 'organization',
-    component: Main,
-    meta: {
-      hideInBread: true
-    },
-    children: [{
-      path: 'organization_page',
-      name: 'organization_page',
-      meta: {
-        icon: 'ios-people',
-        title: '组织机构'
-      },
-      component: () => import('@/view/organization/organization_page.vue')
-    }]
-  },
-  {
-    path: '/message',
-    name: 'message',
-    component: Main,
-    meta: {
-      hideInBread: true,
-      hideInMenu: false
-    },
-    children: [{
-      path: 'message_page',
-      name: 'message_page',
-      meta: {
-        icon: 'md-notifications',
-        title: '消息中心'
-      },
-      component: () => import('@/view/message/index.vue')
-    }]
-  },
-
+  //我的工作模块
   {
     path: '/myWork',
     name: 'myWork',
@@ -140,6 +86,15 @@ export default [{
     },
     component: Main,
     children: [{
+        path: 'createWork_page',
+        name: 'createWork_page',
+        meta: {
+          icon: 'md-create',
+          title: '新建业务'
+        },
+        component: () => import('@/view/myWork/createWork.vue')
+      },
+      {
         path: 'handlingWork_page',
         name: 'handlingWork_page',
         meta: {
@@ -168,6 +123,68 @@ export default [{
       }
     ]
   },
+
+  //消息模块
+  {
+    path: '/message',
+    name: 'message',
+    component: Main,
+    meta: {
+      hideInBread: true,
+      hideInMenu: false
+    },
+    children: [{
+      path: 'message_page',
+      name: 'message_page',
+      meta: {
+        icon: 'md-notifications',
+        title: '消息中心'
+      },
+      component: () => import('@/view/message/index.vue')
+    }]
+  },
+
+  //组织机构模块
+  {
+    path: '/organization',
+    name: 'organization',
+    component: Main,
+    meta: {
+      hideInBread: true
+    },
+    children: [{
+      path: 'organization_page',
+      name: 'organization_page',
+      meta: {
+        icon: 'ios-people',
+        title: '组织机构'
+      },
+      component: () => import('@/view/organization/organization_page.vue')
+    }]
+  },
+
+  //日志模块
+  {
+    path: '/log',
+    name: 'log',
+    meta: {
+      hideInBread: true,
+      hideInMenu: false
+    },
+    component: Main,
+    children: [{
+      path: 'logCollection_page',
+      name: 'logCollection_page',
+      meta: {
+        icon: 'ios-bug',
+        title: '日志收集',
+        beforeCloseName: 'before_close_normal'
+      },
+      component: () => import('@/view/logCollection/logCollection_page.vue')
+    }]
+  },
+
+  //流程设计模块
   {
     path: '/workflowDesigne',
     name: 'workflowDesigne',
@@ -185,6 +202,8 @@ export default [{
       component: () => import('@/view/workflowDesigne/workflowDesign.vue')
     }]
   },
+
+  //表单设计器模块
   {
     path: '/formDesigner',
     name: 'formDesigner',
