@@ -9,19 +9,19 @@
           style="width: 300px" />
       </FormItem>
       <FormItem>
-        <Button @click="getProcessImage" type="primary" :loading="loadingImage">查看流程状态</Button>
+        <Button @click="getProcessImage" type="primary" :loading="loadingImage" size="large">查看流程状态</Button>
       </FormItem>
       <FormItem>
-        <Button @click="getBusinessForm" type="primary">查看业务表单</Button>
+        <Button @click="getBusinessForm" type="primary" size="large">查看业务表单</Button>
       </FormItem>
       <FormItem>
-        <Button @click="submitTask" type="primary">提 交</Button>
+        <Button @click="submitTask" type="primary" size="large">提 交</Button>
       </FormItem>
       <FormItem>
-        <Button @click="claimTask" :disabled="disabledClaim" type="primary">接 办</Button>
+        <Button @click="claimTask" :disabled="disabledClaim" type="primary" size="large">接 办</Button>
       </FormItem>
       <FormItem>
-        <Button @click="unClaimTask" :disabled="disabledClaim" type="primary">退 办</Button>
+        <Button @click="unClaimTask" :disabled="disabledClaim" type="primary" size="large">退 办</Button>
       </FormItem>
       <FormItem>
         <Button shape="circle" icon="md-refresh" @click="getTableList"></Button>
@@ -40,6 +40,7 @@
 <script>
 import workflowDesignApi from "@/api/workflowDesign.js";
 import { mapState } from "vuex";
+import "./style.css";
 
 export default {
   name: "handlingWork_page",
@@ -100,7 +101,7 @@ export default {
           key: "remarkContent",
           width: 200,
           align: "center",
-          className: "zzz"
+          className: "remark-content-column"
         },
         //隐藏列，用于记录taskId方便操作
         {
@@ -326,13 +327,3 @@ export default {
 };
 </script>
 
-<style scoped>
-.ivu-btn {
-  border-color: #fff;
-}
-.ivu-table td.zzz {
-  font-size: 50px;
-  background-color: red;
-  color: red;
-}
-</style>

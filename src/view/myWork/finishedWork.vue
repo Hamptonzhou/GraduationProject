@@ -9,10 +9,10 @@
           style="width: 300px" />
       </FormItem>
       <FormItem>
-        <Button @click="getProcessImage" type="primary" :loading="loadingImage">查看业务流程</Button>
+        <Button @click="getProcessImage" type="primary" :loading="loadingImage" size="large">查看业务流程</Button>
       </FormItem>
       <FormItem>
-        <Button @click="getBusinessForm" type="primary">查看业务表单</Button>
+        <Button @click="getBusinessForm" type="primary" size="large">查看业务表单</Button>
       </FormItem>
       <FormItem>
         <Button shape="circle" icon="md-refresh" @click="getTableList"></Button>
@@ -23,7 +23,7 @@
     <Page :total="total" show-elevator show-sizer show-total :page-size="30" :page-size-opts="[30, 50, 100]" @on-change="getCurrentPage"
       @on-page-size-change="getPageSize" />
     <Modal v-model="showDoubleClickModal" title="业务流程备注信息">
-      <textarea ref="remarkTextarea" cols="80" rows="10" autofocus placeholder="无备注信息"></textarea>
+      <textarea ref="remarkTextarea" cols="80" rows="10" autofocus placeholder="无备注信息" disabled></textarea>
     </Modal>
   </div>
 </template>
@@ -31,6 +31,7 @@
 <script>
 import workflowDesignApi from "@/api/workflowDesign.js";
 import { mapState } from "vuex";
+import "./style.css";
 
 export default {
   name: "finishedWork_page",
@@ -79,7 +80,7 @@ export default {
           key: "remarkContent",
           width: 300,
           align: "center",
-          className: "zzz"
+          className: "remark-content-column"
         }
       ],
       isloading: false,
@@ -194,13 +195,3 @@ export default {
 };
 </script>
 
-<style scoped>
-.ivu-btn {
-  border-color: #fff;
-}
-.ivu-table td.zzz {
-  font-size: 50px;
-  background-color: red;
-  color: red;
-}
-</style>

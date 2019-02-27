@@ -23,7 +23,7 @@
     <Page :total="total" show-elevator show-sizer show-total :page-size="30" :page-size-opts="[30, 50, 100]" @on-change="getCurrentPage"
       @on-page-size-change="getPageSize" />
     <Modal v-model="showDoubleClickModal" title="业务流程备注信息">
-      <textarea ref="remarkTextarea" cols="80" rows="10" autofocus placeholder="无备注信息"></textarea>
+      <textarea ref="remarkTextarea" cols="80" rows="10" autofocus placeholder="无备注信息" disabled></textarea>
     </Modal>
   </div>
 </template>
@@ -31,6 +31,7 @@
 <script>
 import workflowDesignApi from "@/api/workflowDesign.js";
 import { mapState } from "vuex";
+import "./style.css";
 
 export default {
   name: "personalDoneWork_page",
@@ -98,7 +99,7 @@ export default {
           key: "remarkContent",
           width: 200,
           align: "center",
-          className: "zzz"
+          className: "remark-content-column"
         },
         //隐藏列，用于记录taskId方便操作
         {
@@ -225,13 +226,3 @@ export default {
 };
 </script>
 
-<style scoped>
-.ivu-btn {
-  border-color: #fff;
-}
-.ivu-table td.zzz {
-  font-size: 50px;
-  background-color: red;
-  color: red;
-}
-</style>
