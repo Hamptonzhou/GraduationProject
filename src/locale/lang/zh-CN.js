@@ -26,7 +26,7 @@ export default {
   formDesigner_page: '表单设计器',
   message_page: '消息中心',
   myWork: '我的工作',
-  createWork_page: '新建工作',
+  createWork_page: '新建业务',
   handlingWork_page: '在办工作',
   personalDoneWork_page: '个人已办',
   finishedWork_page: '办结业务',

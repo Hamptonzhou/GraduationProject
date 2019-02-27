@@ -47,7 +47,7 @@ export default {
   formDesigner_page: '表單設計器',
   message_page: '消息中心',
   myWork: '我的工作',
-  createWork_page: '新建工作',
+  createWork_page: '新建业务',
   handlingWork_page: '在辦工作',
   personalDoneWork_page: '個人已辦',
   finishedWork_page: '辦結业务',
