@@ -1,0 +1,21 @@
+/* 去掉文本域的边框 */
+textarea {
+  border: 0;
+  background-color: transparent;
+  color: #666464;
+  height: auto;
+}
+
+/* 备注信息内容过多时，使用省略号代替 */
+.ivu-table td.remark-content-column {
+  font-size: 5px;
+  color: red;
+}
+
+/* button {
+  .ivu-btn-large {
+    padding: 6px 15px 6px 15px;
+    font-size: 14px;
+    border-radius: 4px;
+  }
+} */
