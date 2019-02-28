@@ -3,7 +3,7 @@
     <Row>
       <i-col span="5">
         <FormItem label="登录账号" prop="loginName">
-          <Input v-model="peopleForm.loginName"/>
+          <Input v-model="peopleForm.loginName" />
         </FormItem>
       </i-col>
       <i-col span="5">
@@ -18,48 +18,48 @@
     <Row>
       <i-col span="5">
         <FormItem label="用户密码" prop="userPassword">
-          <Input type="password" v-model="peopleForm.userPassword"/>
+          <Input type="password" v-model="peopleForm.userPassword" />
         </FormItem>
       </i-col>
       <i-col span="5">
         <FormItem label="确认密码" prop="confirmPassword">
-          <Input type="password" v-model="peopleForm.confirmPassword"/>
+          <Input type="password" v-model="peopleForm.confirmPassword" />
         </FormItem>
       </i-col>
     </Row>
     <Row>
       <i-col span="5">
         <FormItem label="真实姓名" prop="realName">
-          <Input v-model="peopleForm.realName"/>
+          <Input v-model="peopleForm.realName" />
         </FormItem>
       </i-col>
       <i-col span="5">
         <FormItem label="身份证号码" prop="identityNumber">
-          <Input v-model="peopleForm.identityNumber"/>
+          <Input v-model="peopleForm.identityNumber" />
         </FormItem>
       </i-col>
     </Row>
     <Row>
       <i-col span="5">
         <FormItem label="手机号码" prop="phone">
-          <Input v-model="peopleForm.phone"/>
+          <Input v-model="peopleForm.phone" />
         </FormItem>
       </i-col>
       <i-col span="5">
         <FormItem label="邮箱地址" prop="email">
-          <Input v-model="peopleForm.email"/>
+          <Input v-model="peopleForm.email" />
         </FormItem>
       </i-col>
     </Row>
     <Row>
       <i-col span="5">
         <FormItem label="学历" prop="education">
-          <Input v-model="peopleForm.education"/>
+          <Input v-model="peopleForm.education" />
         </FormItem>
       </i-col>
       <i-col span="5">
         <FormItem label="民族" prop="ethnicity">
-          <Input v-model="peopleForm.ethnicity"/>
+          <Input v-model="peopleForm.ethnicity" />
         </FormItem>
       </i-col>
     </Row>
@@ -79,27 +79,19 @@
       </i-col>
       <i-col span="5">
         <FormItem label="工号" prop="jobNumber">
-          <Input v-model="peopleForm.jobNumber"/>
+          <Input v-model="peopleForm.jobNumber" />
         </FormItem>
       </i-col>
     </Row>
     <Row>
       <i-col span="5">
         <FormItem label="注册时间" prop="registerTime">
-          <DatePicker
-            type="date"
-            v-model="peopleForm.registerTime"
-            @on-change="peopleForm.registerTime=$event"
-          ></DatePicker>
+          <DatePicker type="date" v-model="peopleForm.registerTime" @on-change="peopleForm.registerTime=$event"></DatePicker>
         </FormItem>
       </i-col>
       <i-col span="5">
         <FormItem label="入职时间" prop="joinTime">
-          <DatePicker
-            type="date"
-            v-model="peopleForm.joinTime"
-            @on-change="peopleForm.joinTime=$event"
-          ></DatePicker>
+          <DatePicker type="date" v-model="peopleForm.joinTime" @on-change="peopleForm.joinTime=$event"></DatePicker>
         </FormItem>
       </i-col>
     </Row>
@@ -125,24 +117,20 @@
     <Row>
       <i-col span="14">
         <FormItem label="当前住址" prop="address">
-          <Input v-model="peopleForm.address"/>
+          <Input v-model="peopleForm.address" />
         </FormItem>
       </i-col>
     </Row>
     <Row>
       <i-col span="14">
         <FormItem label="员工描述" prop="userDescription">
-          <Input
-            v-model="peopleForm.userDescription"
-            type="textarea"
-            :autosize="{minRows: 2,maxRows: 5}"
-          />
+          <Input v-model="peopleForm.userDescription" type="textarea" :autosize="{minRows: 2,maxRows: 5}" />
         </FormItem>
       </i-col>
     </Row>
     <FormItem>
       <Button type="primary" @click="handleSubmit('peopleForm')">保存提交</Button>
-      <Divider type="vertical"/>
+      <Divider type="vertical" />
       <Button @click="handleReset('peopleForm')">清空全部</Button>
     </FormItem>
   </Form>
@@ -318,6 +306,7 @@ export default {
               console.log(res);
               if (res.status === 0) {
                 this.$Message.success("新增员工成功!");
+                this.handleReset("departmentForm");
               } else {
                 this.$Message.error("新增员工失败!");
               }

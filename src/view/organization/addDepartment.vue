@@ -1,36 +1,31 @@
 <template>
   <div>
-    <Form
-      ref="departmentForm"
-      :model="departmentForm"
-      :rules="ruleDepartmentForm"
-      :label-width="100"
-    >
+    <Form ref="departmentForm" :model="departmentForm" :rules="ruleDepartmentForm" :label-width="100">
       <Row>
         <i-col span="10">
           <FormItem label="部门名称" prop="departmentName">
-            <Input v-model="departmentForm.departmentName"/>
+            <Input v-model="departmentForm.departmentName" />
           </FormItem>
         </i-col>
       </Row>
       <Row>
         <i-col span="10">
           <FormItem label="部门负责人" prop="contactUserId">
-            <Input v-model="departmentForm.contactUserId"/>
+            <Input v-model="departmentForm.contactUserId" />
           </FormItem>
         </i-col>
       </Row>
       <Row>
         <i-col span="10">
           <FormItem label="部门传真" prop="fax">
-            <Input v-model="departmentForm.fax"/>
+            <Input v-model="departmentForm.fax" />
           </FormItem>
         </i-col>
       </Row>
       <Row>
         <i-col span="10">
           <FormItem label="部门描述" prop="departmentDescription">
-            <Input v-model="departmentForm.departmentDescription"/>
+            <Input v-model="departmentForm.departmentDescription" />
           </FormItem>
         </i-col>
       </Row>
@@ -43,6 +38,7 @@
 </template>
 <script>
 import organizationAPI from "@/api/organization.js";
+
 export default {
   data() {
     return {
@@ -80,13 +76,14 @@ export default {
             .saveOrUpdateDepartment(this.departmentForm)
             .then(res => {
               if (res.status === 0) {
+                this.handleReset("departmentForm");
                 this.$Message.success("新增部门成功!");
               } else {
                 this.$Message.error("新增部门失败!");
               }
             })
             .catch(err => {
-              console.log("catch-请求失败");
+              this.$Message.error("catch-新增部门失败!");
             });
         } else {
           this.$Message.error("请完善信息!");

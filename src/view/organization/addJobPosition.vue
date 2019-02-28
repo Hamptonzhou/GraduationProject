@@ -1,22 +1,17 @@
 <template>
   <div>
-    <Form
-      ref="departmentForm"
-      :model="departmentForm"
-      :rules="ruleDepartmentForm"
-      :label-width="100"
-    >
+    <Form ref="departmentForm" :model="departmentForm" :rules="ruleDepartmentForm" :label-width="100">
       <Row>
         <i-col span="10">
           <FormItem label="岗位名称" prop="jobPositionName">
-            <Input v-model="departmentForm.jobPositionName"/>
+            <Input v-model="departmentForm.jobPositionName" />
           </FormItem>
         </i-col>
       </Row>
       <Row>
         <i-col span="10">
           <FormItem label="岗位负责人" prop="contactUserId">
-            <Input v-model="departmentForm.contactUserId"/>
+            <Input v-model="departmentForm.contactUserId" />
           </FormItem>
         </i-col>
       </Row>
@@ -24,11 +19,7 @@
         <i-col span="10">
           <FormItem label="所属部门" prop="parentId">
             <Select v-model="departmentForm.parentId">
-              <Option
-                v-for="department in departmentList"
-                :key="department.id"
-                :value="department.id"
-              >{{department.departmentName}}</Option>
+              <Option v-for="department in departmentList" :key="department.id" :value="department.id">{{department.departmentName}}</Option>
             </Select>
           </FormItem>
         </i-col>
@@ -36,7 +27,7 @@
       <Row>
         <i-col span="10">
           <FormItem label="岗位描述" prop="departmentDescription">
-            <Input v-model="departmentForm.departmentDescription"/>
+            <Input v-model="departmentForm.departmentDescription" />
           </FormItem>
         </i-col>
       </Row>
@@ -114,6 +105,7 @@ export default {
             .then(res => {
               if (res.status === 0) {
                 this.$Message.success("新增岗位成功!");
+                this.handleReset("departmentForm");
               } else {
                 this.$Message.error("新增岗位失败!");
               }
