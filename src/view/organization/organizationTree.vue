@@ -44,7 +44,9 @@ export default {
     },
     // 选中节点
     selectedNode(node) {
-      this.$Message.info(node);
+      this.selectedNodeId = node[0].id;
+      //把数据传递到父组件
+      this.$emit("childSendParentSelectedNodeId", this.selectedNodeId);
     },
 
     // 点击时，根据点击的树节点的parentId去获取当前树节点的所有用户，在右边用卡片显示
