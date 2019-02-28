@@ -1,16 +1,12 @@
 <template>
   <div>
-    <h1>表单设计器页面</h1>
+    <iframe src="http://localhost:9601/formDesigner/index.html" width=1500 height="800" scrolling="auto" frameborder=0></iframe>
   </div>
+
 </template>
+
 <script>
 export default {
-  name: "export-excel",
-  data() {
-    return {};
-  },
-  methods: {},
-  created() {},
-  mounted() {}
-};
+  name: 'formDesigner_page'
+}
 </script>
