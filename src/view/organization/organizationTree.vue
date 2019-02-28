@@ -1,10 +1,7 @@
 <template>
-  <Tree
-    :data="departmentList"
-    :load-data="loadChildren"
-    :empty-text="'aa'"
-    @on-select-change="getCurrentTreeNodePeople"
-  ></Tree>
+  <div>
+    <Tree :data="departmentTree" @on-select-change="selectedNode"></Tree>
+  </div>
 </template>
 <script>
 import organizationAPI from "@/api/organization.js";
@@ -13,56 +10,50 @@ export default {
     return {
       parentId: null,
       newList: [],
-      departmentList: [
-        {
-          title: "所有部门",
-          loading: false,
-          children: [],
-          departmentId: ""
-        }
-      ]
+      departmentTree: []
     };
   },
+  mounted() {
+    this.fetchDepartmentTree();
+  },
   methods: {
-    // item 当前节点的信息
-    loadChildren(item, callback) {
-      if (this.parentId === null) {
-        this.parentId = "#";
-      } else {
-        this.parentId = item.departmentId;
-      }
-      //获取所有部门列表
+    fetchDepartmentTree() {
       organizationAPI
-        .getDepartmentList(this.parentId)
+        .getDepartmentTree()
         .then(res => {
           if (res.status === 0) {
-            var list = res.data;
-            list.forEach(department => {
-              const oneDepartment = {
-                title:
-                  department.departmentName == null
-                    ? department.jobPositionName
-                    : department.departmentName,
-                loading: false,
-                children: [],
-                departmentId: department.id
-              };
-              this.newList.push(oneDepartment);
-            });
-            // console.log(this.newList);
-            callback(this.newList);
-            //清空数组
-            this.newList = [];
+            this.departmentTree = this.getTree(res.data);
           } else {
-            console.log("无法获取部门列表");
+            this.$Message.error("else-无法获取部门列表");
           }
         })
-        .catch("catch-请求获取部门列表失败");
+        .catch(err => {
+          this.$Message.error("catch-请求获取部门列表失败");
+        });
+    },
+
+    getTree(tree = []) {
+      debugger;
+      let arr = [];
+      if (tree.length !== 0) {
+        tree.forEach(item => {
+          let obj = {};
+          obj.id = item.id;
+          obj.title = tree.departmentName || tree.jobPositionName;
+          arr.push(obj);
+        });
+      }
+      return arr;
+    },
+
+    //选中节点
+    selectedNode(node) {
+      this.$Message.info(node);
     },
 
     // 点击时，根据点击的树节点的parentId去获取当前树节点的所有用户，在右边用卡片显示
     getCurrentTreeNodePeople() {
-      console.log(
+      this.$Message.info(
         "点击时，根据点击的树节点的parentId去获取当前树节点的所有用户，在右边用卡片显示"
       );
     }
