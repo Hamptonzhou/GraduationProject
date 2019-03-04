@@ -1,5 +1,5 @@
 <template>
-  <div v-loading="loading">
+  <div>
     <!-- 搜索框 -->
     <div style="margin-top: 10px;display: flex;justify-content: center">
       <el-input placeholder="默认展示部分用户，可以通过用户名搜索用户..." prefix-icon="el-icon-search" v-model="keywords" style="width: 400px"
@@ -8,45 +8,39 @@
       <el-button type="primary" icon="el-icon-search" size="small" style="margin-left: 3px" @click="searchClick">搜索
       </el-button>
     </div>
+    <h1>{{this.selectedNodeId}}</h1>
+
     <!-- 卡片 -->
-    <div style="display: flex;justify-content: space-around;flex-wrap: wrap">
+    <div style="display: flex;justify-content: space-around;flex-wrap: wrap" v-loading="loading">
       <el-card style="width:330px;margin-top: 10px;" v-for="(user,index) in users" :key="index" v-loading="cardloading[index]">
         <div slot="header" style="text-align: left">
-          <span>{{user.nickname}}</span>
+          <span>{{user.realName}}</span>
           <el-button style="float: right; padding: 3px 0;color: #ff0509" type="text" icon="el-icon-delete" @click="deleteUser(user.id)">删除
           </el-button>
         </div>
         <div>
-          <div><img :src="user.userface" :alt="user.nickname" style="width: 70px;height: 70px"></div>
+          <div><img src="http://localhost:9601/favicon.ico" :alt="user.realName" style="width: 70px;height: 70px"></div>
           <div style="text-align: left;color:#20a0ff;font-size: 12px;margin-top: 13px">
-            <span>用户名:</span><span>{{user.username}}</span>
+            <span>用户名:</span><span>{{user.loginName}}</span>
           </div>
           <div style="text-align: left;color:#20a0ff;font-size: 12px;margin-top: 13px">
             <span>电子邮箱:</span><span>{{user.email}}</span>
           </div>
           <div style="text-align: left;color:#20a0ff;font-size: 12px;margin-top: 13px">
-            <span>注册时间:</span><span>{{user.regTime | formatDateTime}}</span>
+            <span>注册时间:</span><span>{{user.registerTime }}</span>
           </div>
           <div style="text-align: left;color:#20a0ff;font-size: 12px;margin-top: 13px;display: flex;align-items: center">
             <span>用户状态:</span>
-            <el-switch v-model="user.enabled" active-text="启用" active-color="#13ce66" @change="enabledChange(user.enabled,user.id,index)"
+            <el-switch v-model="user.enable" active-text="启用" active-color="#13ce66" @change="enabledChange(user.enabled,user.id,index)"
               inactive-text="禁用" style="font-size: 12px">
             </el-switch>
           </div>
-          <div style="text-align: left;color:#20a0ff;font-size: 12px;margin-top: 13px">
+          <!-- <div style="text-align: left;color:#20a0ff;font-size: 12px;margin-top: 13px">
             <span>用户角色:</span>
             <el-tag v-for="role in user.roles" :key="role.id" size="mini" style="margin-right: 8px" type="success">
               {{role.name}}
             </el-tag>
-            <el-popover placement="right" title="角色列表" width="200" :key="index+''+user.id" @hide="saveRoles(user.id,index)"
-              trigger="click" v-loading="eploading[index]">
-              <el-select v-model="roles" :key="user.id" multiple placeholder="请选择" size="mini">
-                <el-option v-for="(item,index) in allRoles" :key="user.id+'-'+item.id" :label="item.name" :value="item.id">
-                </el-option>
-              </el-select>
-              <el-button type="text" icon="el-icon-more" style="padding-top: 0px" slot="reference" @click="showRole(user.roles,user.id,index)"></el-button>
-            </el-popover>
-          </div>
+          </div> -->
         </div>
       </el-card>
     </div>
@@ -70,7 +64,6 @@ export default {
   },
   mounted: function() {
     this.loading = true;
-    this.loadUserList();
     this.cardloading = Array.apply(null, Array(20)).map(function(item, i) {
       return false;
     });
@@ -78,7 +71,29 @@ export default {
       return false;
     });
   },
+  watch: {
+    selectedNodeId: function() {
+      this.loadUserList(this.selectedNodeId);
+    }
+  },
   methods: {
+    loadUserList(selectedNodeId) {
+      organizationAPI
+        .loadUserList(selectedNodeId)
+        .then(res => {
+          if (res.status === 0) {
+            this.loading = false;
+            this.users = res.data.rows;
+          } else {
+            this.loading = false;
+            this.$Message.error("else-获取用户列表失败");
+          }
+        })
+        .catch(err => {
+          this.loading = false;
+          this.$Message.error("catch-请求服务器失败");
+        });
+    },
     saveRoles(id, index) {
       var selRoles = this.roles;
       if (this.cpRoles.length == selRoles.length) {
@@ -158,21 +173,22 @@ export default {
     enabledChange(enabled, id, index) {
       var _this = this;
       _this.cardloading.splice(index, 1, true);
-      putRequest("/admin/user/enabled", { enabled: enabled, uid: id }).then(
-        resp => {
-          if (resp.status != 200) {
+      organizationAPI
+        .enabledChange(id)
+        .then(res => {
+          if (res.status === 0) {
+            _this.cardloading.splice(index, 1, false);
+            _this.$message({ type: "success", message: "更新成功!" });
+          } else {
+            _this.cardloading.splice(index, 1, false);
             _this.$message({ type: "error", message: "更新失败!" });
             _this.loadOneUserById(id, index);
-            return;
           }
+        })
+        .catch(err => {
           _this.cardloading.splice(index, 1, false);
-          _this.$message({ type: "success", message: "更新成功!" });
-        },
-        resp => {
           _this.$message({ type: "error", message: "更新失败!" });
-          _this.loadOneUserById(id, index);
-        }
-      );
+        });
     },
     loadRoles(index) {
       var _this = this;
@@ -214,20 +230,6 @@ export default {
           }
         }
       );
-    },
-    loadUserList() {
-      organizationAPI
-        .loadUserList(this.selectedNodeId)
-        .then(res => {
-          if (res.status === 0) {
-            this.users = res.data;
-          } else {
-            this.$Message.error("else-获取用户列表失败");
-          }
-        })
-        .catch(err => {
-          this.$Message.error("catch-请求服务器失败");
-        });
     },
     searchClick() {
       this.loading = true;
