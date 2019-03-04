@@ -25,5 +25,11 @@ export default {
   // 获取组织结构树
   getDepartmentTree() {
     return config.doGetPromise(baseUrl + '/DepartmentController/getDepartmentTree')
+  },
+  //获取选择部门下的人员
+  loadUserList(selectedNodeId) {
+    return config.doGetPromise(baseUrl + '/UserController/getUserByParentId', {
+      queryId: selectedNodeId
+    })
   }
 }
