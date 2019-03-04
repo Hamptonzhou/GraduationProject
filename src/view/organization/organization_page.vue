@@ -11,7 +11,7 @@
           <Divider type="vertical" />
           <Button type="primary" ghost size="large" @click="changeComponent='addJobPosition'">新建岗位</Button>
           <Divider type="vertical" />
-          <Button type="primary" ghost size="large" @click="changeComponent='addPeople'">新建人员</Button>
+          <Button type="primary" ghost size="large" @click="changeComponent='AddPeople'">新建人员</Button>
           <Divider type="vertical" />
           <Divider type="horizontal" />
           <component :is="changeComponent" :selectedNodeId="selectedNodeId"></component>
@@ -25,7 +25,7 @@
 import organizationTree from "@/view/organization/organizationTree.vue";
 import addDepartment from "@/view/organization/addDepartment.vue";
 import addJobPosition from "@/view/organization/addJobPosition.vue";
-import addPeople from "@/view/organization/addPeople.vue";
+import AddPeople from "@/view/organization/AddPeople.vue";
 import showPeople from "@/view/organization/showPeople.vue";
 
 export default {
@@ -34,7 +34,7 @@ export default {
     organizationTree,
     addDepartment,
     addJobPosition,
-    addPeople,
+    AddPeople,
     showPeople
   },
   data() {
