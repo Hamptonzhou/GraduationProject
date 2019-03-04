@@ -63,18 +63,11 @@
         </FormItem>
       </i-col>
     </Row>
-
     <Row>
       <i-col span="5">
         <FormItem label="所属岗位" prop="parentId">
-          <Select v-model="peopleForm.parentId">
-            <!-- TODO -->
-            <!-- <Option
-              v-for="department in departmentList"
-              :key="department.id"
-              :value="department.id"
-            >{{department.departmentName}}</Option>-->
-          </Select>
+          <treeselect v-model="peopleForm.parentId" :options="options" @open="clickOpen" @select="selectedNode"
+            placeholder="请选择人员的岗位" clearable searchable :show-count="true" noChildrenText="" />
         </FormItem>
       </i-col>
       <i-col span="5">
@@ -86,12 +79,12 @@
     <Row>
       <i-col span="5">
         <FormItem label="注册时间" prop="registerTime">
-          <DatePicker type="date" v-model="peopleForm.registerTime" @on-change="peopleForm.registerTime=$event"></DatePicker>
+          <DatePicker type="date" @on-change="peopleForm.registerTime=$event"></DatePicker>
         </FormItem>
       </i-col>
       <i-col span="5">
         <FormItem label="入职时间" prop="joinTime">
-          <DatePicker type="date" v-model="peopleForm.joinTime" @on-change="peopleForm.joinTime=$event"></DatePicker>
+          <DatePicker type="date" @on-change="peopleForm.joinTime=$event"></DatePicker>
         </FormItem>
       </i-col>
     </Row>
@@ -137,7 +130,13 @@
 </template>
 <script>
 import organizationAPI from "@/api/organization.js";
+// import the component
+import Treeselect from "@riophae/vue-treeselect";
+// import the styles
+import "@riophae/vue-treeselect/dist/vue-treeselect.css";
 export default {
+  // register the component
+  components: { Treeselect },
   data() {
     //请求后端接口，验证登录账号是否存在
     const validateloginName = (rule, value, callback) => {
@@ -165,6 +164,7 @@ export default {
       }
     };
     return {
+      options: [],
       peopleForm: {
         loginName: "",
         userPassword: "",
@@ -280,14 +280,14 @@ export default {
         gender: [{ required: true, message: "请选择性别", trigger: "change" }],
         registerTime: {
           required: true,
-          type: "date",
+          // type: "date",
           message: "请选择注册时间",
           trigger: "change"
         },
         joinTime: [
           {
             required: true,
-            type: "date",
+            // type: "date",
             message: "请选择入职时间",
             trigger: "change"
           }
@@ -296,6 +296,42 @@ export default {
     };
   },
   methods: {
+    //选择岗位的下拉列表树
+    selectedNode(node, instanceId) {
+      console.log(node.id);
+      this.parentId = node.id;
+    },
+
+    //点击下拉框时，才进行加载组织树
+    clickOpen() {
+      organizationAPI
+        .getDepartmentTree()
+        .then(res => {
+          if (res.status === 0) {
+            this.options = this.getTree(res.data);
+          } else {
+            this.$Message.error("else-无法获取部门列表");
+          }
+        })
+        .catch(err => {
+          this.$Message.error("catch-请求获取部门列表失败");
+        });
+    },
+    getTree(tree = []) {
+      let arr = [];
+      let obj = {};
+      obj.id = tree.id;
+      obj.title = tree.title;
+      obj.children = tree.children;
+      obj.expand = true;
+      arr.push(obj);
+      //将对象转换成字符串
+      var departmentTreeString = JSON.stringify(arr).replace(/title/g, "label");
+      //将字符串转换成对象
+      var departmentTree = JSON.parse(departmentTreeString);
+      return departmentTree;
+    },
+
     //提交表单
     handleSubmit(peopleForm) {
       this.$refs[peopleForm].validate(valid => {
@@ -305,14 +341,14 @@ export default {
             .then(res => {
               console.log(res);
               if (res.status === 0) {
-                this.$Message.success("新增员工成功!");
-                this.handleReset("departmentForm");
+                this.$Message.success("新增员工 " + res.data + " 成功!");
+                this.handleReset("peopleForm");
               } else {
                 this.$Message.error("新增员工失败!");
               }
             })
             .catch(err => {
-              console.log("catch-请求失败");
+              this.$Message.error("catch-请求失败!");
             });
         } else {
           this.$Message.error("请完善信息!");
