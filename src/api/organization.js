@@ -31,5 +31,23 @@ export default {
     return config.doGetPromise(baseUrl + '/UserController/getUserByParentId', {
       queryId: selectedNodeId
     })
+  },
+  //删除指定用户
+  deleteUser(userId) {
+    return config.doGetPromise(baseUrl + '/UserController/deleteUserByIds', {
+      ids: userId
+    })
+  },
+  //禁用用户
+  enableChange(userId) {
+    return config.doPostPromise(baseUrl + '/UserController/enableChange', {
+      userId
+    })
+  },
+  //加载指定用户的信息
+  loadOneUserById(userId) {
+    return config.doPostPromise(baseUrl + '/UserController/loadOneUserById', {
+      userId
+    })
   }
 }
