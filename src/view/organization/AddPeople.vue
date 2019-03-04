@@ -280,14 +280,14 @@ export default {
         gender: [{ required: true, message: "请选择性别", trigger: "change" }],
         registerTime: {
           required: true,
-          // type: "date",
+          type: "string",
           message: "请选择注册时间",
           trigger: "change"
         },
         joinTime: [
           {
             required: true,
-            // type: "date",
+            type: "string",
             message: "请选择入职时间",
             trigger: "change"
           }
