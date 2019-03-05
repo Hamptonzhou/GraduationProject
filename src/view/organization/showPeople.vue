@@ -62,7 +62,6 @@ export default {
     };
   },
   mounted: function() {
-    this.loading = true;
     this.cardloading = Array.apply(null, Array(20)).map(function(item, i) {
       return false;
     });
@@ -77,6 +76,7 @@ export default {
   },
   methods: {
     loadUserList(selectedNodeId) {
+      this.loading = true;
       organizationAPI
         .loadUserList(selectedNodeId)
         .then(res => {
@@ -105,7 +105,6 @@ export default {
           organizationAPI
             .deleteUser(id)
             .then(res => {
-              debugger;
               if (res.status === 0) {
                 _this.loading = false;
                 this.$Message.success("删除成功！");
