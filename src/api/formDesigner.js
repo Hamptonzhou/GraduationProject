@@ -9,4 +9,10 @@ export default {
       formData
     })
   },
+  // 获取表单实体对象
+  getFormDataById(formDataId) {
+    return config.doGetPromise(baseUrl + '/FormController/getFormDataById', {
+      formDataId
+    })
+  },
 }
