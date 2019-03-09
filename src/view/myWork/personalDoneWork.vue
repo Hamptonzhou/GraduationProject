@@ -9,10 +9,10 @@
           style="width: 300px" />
       </FormItem>
       <FormItem>
-        <Button @click="getProcessImage" type="primary" :loading="loadingImage">查看业务流程</Button>
+        <Button @click="getProcessImage" type="primary" :loading="loadingImage" size="large">查看流程状态</Button>
       </FormItem>
       <FormItem>
-        <Button @click="getBusinessForm" type="primary">查看业务表单</Button>
+        <Button @click="getBusinessForm" type="primary" size="large">查看业务表单</Button>
       </FormItem>
       <FormItem>
         <Button shape="circle" icon="md-refresh" @click="getTableList"></Button>
