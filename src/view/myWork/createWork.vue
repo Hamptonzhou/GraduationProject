@@ -1,36 +1,50 @@
 <template>
   <div>
+    <!-- 查看流程图模态框 -->
     <Modal title="流程状态" width="600" v-model="showImageModal" @on-cancel="showImageModal=false">
       <img :src='image'>
     </Modal>
-    <Form inline>
-      <FormItem>
-        <Input v-model="keyword" @on-change="searchByKeyword" clearable search enter-button placeholder="业务受理号或业务名称"
-          style="width: 300px" />
-      </FormItem>
-      <FormItem>
-        <Button @click="getProcessImage" type="primary" size="large" :loading="loadingImage">选择业务流程</Button>
-      </FormItem>
-      <FormItem>
-        <Button @click="getBusinessForm" type="primary" size="large">选择业务表单</Button>
-      </FormItem>
-      <FormItem>
-        <Button @click="getBusinessForm" type="primary" size="large">批量启动业务</Button>
-      </FormItem>
-      <FormItem>
-        <Button @click="getBusinessForm" type="primary" size="large">保存业务定义</Button>
-      </FormItem>
-      <FormItem>
-        <Button shape="circle" icon="md-refresh" @click="getTableList"></Button>
-      </FormItem>
+    <!-- 备注信息模态框 -->
+    <Modal v-model="showDoubleClickModal" title="业务流程备注信息">
+      <textarea ref="remarkTextarea" cols="80" rows="10" autofocus placeholder="无备注信息"></textarea>
+    </Modal>
+
+    <Form ref="businessDefinitionForm" :model="businessDefinitionForm" :rules="rulebusinessDefinitionForm" :label-width="100">
+      <Row>
+        <i-col span="5">
+          <FormItem label="业务标题" prop="businessTitle">
+            <Input v-model="businessDefinitionForm.businessTitle" />
+          </FormItem>
+        </i-col>
+        <i-col span="5">
+          <FormItem label="所用流程" prop="useProcessId">
+            <treeselect v-model="businessDefinitionForm.useProcessId" clearable searchable :show-count="true"
+              noChildrenText="" />
+          </FormItem>
+        </i-col>
+        <i-col span="5">
+          <FormItem label="所用表单" prop="useForm">
+            <treeselect v-model="businessDefinitionForm.useForm" clearable searchable :show-count="true" noChildrenText="" />
+          </FormItem>
+        </i-col>
+        <i-col span="8">
+          <FormItem>
+            <Button @click="getProcessImage" type="primary" ghost :loading="loadingImage" size="large">查看流程</Button>
+            <Divider type="vertical" />
+            <Button @click="getForm" type="primary" ghost :loading="loadingImage" size="large">查看表单</Button>
+            <Divider type="vertical" />
+            <Button @click="handleSave" type="primary" size="large">保 存</Button>
+            <Divider type="vertical" />
+            <Button @click="handleReset" type="primary" size="large">重 置</Button>
+
+          </FormItem>
+        </i-col>
+      </Row>
     </Form>
     <Table border size="large" :loading="isloading" highlight-row @on-current-change="getCurrentRow" @on-row-dblclick="getDoubleClick"
       :height="tableHeight" :columns="columns" :data="tableList"></Table>
     <Page :total="total" show-elevator show-sizer show-total :page-size="30" :page-size-opts="[30, 50, 100]" @on-change="getCurrentPage"
       @on-page-size-change="getPageSize" />
-    <Modal v-model="showDoubleClickModal" title="业务流程备注信息">
-      <textarea ref="remarkTextarea" cols="80" rows="10" autofocus placeholder="无备注信息"></textarea>
-    </Modal>
   </div>
 </template>
 
@@ -39,8 +53,15 @@ import workflowDesignApi from "@/api/workflowDesign.js";
 import { mapState } from "vuex";
 import "./style.css";
 
+// import the component
+import Treeselect from "@riophae/vue-treeselect";
+// import the styles
+import "@riophae/vue-treeselect/dist/vue-treeselect.css";
+
 export default {
   name: "createWork_page",
+  // register the component
+  components: { Treeselect },
   data() {
     return {
       columns: [
@@ -56,27 +77,21 @@ export default {
         },
         {
           key: "businessName",
-          title: "业务名称",
+          title: "业务标题",
           width: 250,
           align: "center"
         },
         {
           key: "formName",
-          title: "表单名称",
+          title: "所用表单名称",
           width: 250,
           align: "center"
         },
         {
           key: "taskStartTime",
-          title: "业务状态",
-          width: 170,
+          title: "所用流程名称",
+          width: 250,
           align: "center"
-        },
-        {
-          key: "durationTime",
-          title: "处理耗时",
-          align: "center",
-          width: 150
         },
         {
           title: "操作",
@@ -124,7 +139,7 @@ export default {
         {
           title: "备注信息",
           key: "remarkContent",
-          width: 200,
+          width: 300,
           align: "center",
           className: "remark-content-column"
         },
@@ -142,6 +157,14 @@ export default {
           }
         }
       ],
+      options: [],
+      businessDefinitionForm: {
+        businessTitle: "",
+        userPassword: "",
+        confirmPassword: "",
+        realName: "",
+        jobNumber: ""
+      },
       isloading: false,
       tableList: [],
       total: null,
@@ -165,8 +188,8 @@ export default {
     })
   },
   mounted() {
-    this.isloading = true;
-    this.getTableList();
+    // this.isloading = true;
+    // this.getTableList();
   },
 
   methods: {
@@ -252,4 +275,8 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+</style>
+
 
