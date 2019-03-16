@@ -1,7 +1,7 @@
 <template>
   <div>
-    <Modal title="流程状态" width="600" v-model="showImageModal" @on-cancel="showImageModal=false">
-      <img :src='image'>
+    <Modal v-model="showImageModal" fullscreen footer-hide title="流程状态">
+      <center> <img :src='image'></center>
     </Modal>
     <Form inline>
       <FormItem>
