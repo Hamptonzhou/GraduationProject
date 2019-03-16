@@ -67,7 +67,7 @@
       <i-col span="5">
         <FormItem label="所属岗位" prop="parentId">
           <treeselect v-model="peopleForm.parentId" :options="options" @open="clickOpen" @select="selectedNode"
-            placeholder="请选择人员的岗位" clearable searchable :show-count="true" noChildrenText="" />
+            placeholder="请选择人员的岗位" clearable searchable :show-count="true" noChildrenText="" noOptionsText="无可用数据" />
         </FormItem>
       </i-col>
       <i-col span="5">
@@ -181,7 +181,7 @@ export default {
         registerTime: "",
         joinTime: "",
         jobPosition: "",
-        parentId: "",
+        parentId: null,
         enable: "",
         userDescription: ""
       },
@@ -323,7 +323,6 @@ export default {
       obj.id = tree.id;
       obj.title = tree.title;
       obj.children = tree.children;
-      obj.expand = true;
       arr.push(obj);
       //将对象转换成字符串
       var departmentTreeString = JSON.stringify(arr).replace(/title/g, "label");
