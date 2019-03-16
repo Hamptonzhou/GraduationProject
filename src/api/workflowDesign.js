@@ -110,5 +110,29 @@ export default {
       taskId,
       remarkContent
     })
+  },
+  //新增或修改业务定义
+  saveOrUpdateBusinessDefinition(businessDefinition) {
+    return config.doPostPromise(baseUrl + '/BusinessDefinitionController/saveOrUpdateBusinessDefinition', {
+      businessName: businessDefinition.businessTitle,
+      processDefinitionId: businessDefinition.useProcessId,
+      processDefinitionName: businessDefinition.useProcessName,
+      businessFormId: businessDefinition.useFormId,
+      businessFormName: businessDefinition.useFormName,
+    })
+  },
+  //获取业务定义列表
+  getBusinessDefinitionList(page, rows, keyword, userName) {
+    return config.doGetPromise(baseUrl + '/BusinessDefinitionController/getBusinessDefinitionList', {
+      page: page,
+      rows: rows,
+      keyword: keyword,
+    })
+  },
+  //删除业务定义
+  deleteItem(itemId) {
+    return config.doGetPromise(baseUrl + '/BusinessDefinitionController/deleteBusinessDefinitionByIds', {
+      ids: itemId
+    })
   }
 }
