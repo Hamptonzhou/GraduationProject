@@ -121,7 +121,7 @@ export default {
       tableList: [],
       total: null,
       currentPage: 1,
-      pageSize: 50,
+      pageSize: 30,
       startDate: null,
       endDate: null,
       keyword: null,
@@ -164,7 +164,6 @@ export default {
             this.tableList = res.data.rows;
             this.total = res.data.total;
           } else {
-            this.isloading = false;
             this.$Message.error("else-请求服务器异常");
           }
         })
