@@ -9,10 +9,11 @@
       </Form>
     </Modal>
 
-    <fm-generate-form :data="jsonData" :value="values" ref="generateForm">
-    </fm-generate-form>
+    <!-- <fm-generate-form :data="jsonData" :value="values" ref="generateForm">
+    </fm-generate-form> -->
 
-    <fm-making-form ref="makingForm" preview generate-code generate-json>
+    <fm-making-form ref="makingForm" preview>
+      <!-- generate-code generate-json -->
       <template slot="action">
         <el-button type="text" size="medium" icon="el-icon-download" @click="showModal=true">保存</el-button>
         <!-- 自定义内容 -->
@@ -20,6 +21,7 @@
           <Option v-for="(item,index) in selectList" :key="index" :value="item.id">{{item.formName}}</Option>
         </Select>
         <Button type="primary" ghost style="float:left;" @click="viewFormData(selectedNodeId)">编辑表单</Button>
+        <Button type="primary" ghost style="float:left;" @click="check">测试渲染</Button>
       </template>
     </fm-making-form>
 
@@ -27,19 +29,6 @@
 </template>
 
 <script>
-import Vue from "vue";
-//form-making依赖element-ui
-import ElementUI from "element-ui";
-import "element-ui/lib/theme-chalk/index.css";
-Vue.use(ElementUI);
-//form-making的组件和样式
-import FormMaking from "form-making";
-import "form-making/dist/FormMaking.css";
-Vue.use(FormMaking);
-// form-making的设计器
-import { MakingForm } from "form-making";
-Vue.component(MakingForm.name, MakingForm);
-
 import formDesignerAPI from "@/api/formDesigner.js";
 
 export default {
@@ -73,6 +62,12 @@ export default {
     this.fetchAllFormData();
   },
   methods: {
+    check() {
+      this.jsonData = {
+        list: [],
+        config: {}
+      };
+    },
     //获取所有表单数据
     fetchAllFormData() {
       formDesignerAPI
