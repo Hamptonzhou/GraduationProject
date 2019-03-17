@@ -13,6 +13,20 @@ import installPlugin from '@/plugin'
 import './index.less'
 import '@/assets/icons/iconfont.css'
 
+// import Vue from "vue";
+//form-making依赖element-ui
+import ElementUI from "element-ui";
+import "element-ui/lib/theme-chalk/index.css";
+Vue.use(ElementUI);
+//form-making的组件和样式
+import FormMaking from "form-making";
+import "form-making/dist/FormMaking.css";
+Vue.use(FormMaking);
+// form-making的设计器
+import { MakingForm } from "form-making";
+Vue.component(MakingForm.name, MakingForm);
+
+
 // 实际打包时应该不引入mock
 /* eslint-disable */
 if (process.env.NODE_ENV !== 'production') require('@/mock')
