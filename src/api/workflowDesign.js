@@ -134,5 +134,11 @@ export default {
     return config.doGetPromise(baseUrl + '/BusinessDefinitionController/deleteBusinessDefinitionByIds', {
       ids: itemId
     })
+  },
+  //获取流程实例的businessKey
+  getBusinessFormId(processInstanceId) {
+    return config.doGetPromise(baseUrl + '/CustomConteoller/getBusinessFormId', {
+      processInstanceId
+    })
   }
 }
