@@ -3,6 +3,8 @@
     <Modal v-model="showImageModal" fullscreen footer-hide title="流程状态">
       <center> <img :src='image'></center>
     </Modal>
+    <!-- 业务表单模态框组件 -->
+    <rendering-form ref="renderingFormComp"></rendering-form>
     <Form inline>
       <FormItem>
         <Input v-model="keyword" @on-change="searchByKeyword" clearable search enter-button placeholder="业务受理号或业务名称"
@@ -12,7 +14,7 @@
         <Button @click="getProcessImage" type="primary" :loading="loadingImage" size="large">查看流程状态</Button>
       </FormItem>
       <FormItem>
-        <Button @click="getBusinessForm" type="primary" size="large">查看业务表单</Button>
+        <Button @click="getBusinessForm" type="primary" :loading="loadingForm" size="large">查看业务表单</Button>
       </FormItem>
       <FormItem>
         <Button @click="submitTask" type="primary" size="large">提 交</Button>
@@ -42,8 +44,11 @@ import workflowDesignApi from "@/api/workflowDesign.js";
 import { mapState } from "vuex";
 import "./style.css";
 
+import renderingForm from "@/view/formDesigner/renderingForm.vue";
+
 export default {
   name: "handlingWork_page",
+  components: { renderingForm },
   data() {
     return {
       columns: [
@@ -133,7 +138,8 @@ export default {
       image: null,
       taskType: null,
       showImageModal: false,
-      loadingImage: false
+      loadingImage: false,
+      loadingForm: false
     };
   },
   computed: {
@@ -232,9 +238,29 @@ export default {
           });
       }
     },
-    //查看业务表单
+    //查看渲染之后的业务表单
     getBusinessForm() {
-      this.$Message.info(this.processInstanceId + "查看业务表单");
+      this.loadingForm = true;
+      if (this.processInstanceId === null) {
+        this.loadingForm = false;
+        this.$Message.info("请选择一项工作");
+      } else {
+        //根据this.processInstanceId获取业务key，业务key赋值businessFormId，传递businessFormId到组件渲染表单
+        workflowDesignApi
+          .getBusinessFormId(this.processInstanceId)
+          .then(res => {
+            this.loadingForm = false;
+            if (res.status === 0) {
+              console.log(res);
+              this.$refs.renderingFormComp.showForm(res.data);
+            } else {
+              this.$Message.error("获取业务表单失败");
+            }
+          })
+          .catch(err => {
+            this.$Message.error("catch-请求服务器异常");
+          });
+      }
     },
     //提交任务
     submitTask() {
@@ -246,12 +272,9 @@ export default {
           .then(res => {
             if (res.status === 0) {
               this.getTableList();
-              this.$Modal.success({
-                title: "成功",
-                content: "提交任务成功!"
-              });
+              this.$Message.success("提交任务成功!");
             } else {
-              this.$Message.error(res.message);
+              this.$Message.error("提交任务失败");
             }
           })
           .catch(err => {
