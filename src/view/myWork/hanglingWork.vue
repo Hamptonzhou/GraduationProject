@@ -34,7 +34,7 @@
     <Page :total="total" show-elevator show-sizer show-total :page-size="30" :page-size-opts="[30, 50, 100]" @on-change="getCurrentPage"
       @on-page-size-change="getPageSize" />
     <Modal v-model="showDoubleClickModal" title="业务流程备注信息" @on-ok="confirmRemark">
-      <textarea ref="remarkTextarea" cols="80" rows="10" autofocus placeholder="请填写业务流程备注信息"></textarea>
+      <textarea ref="remarkTextarea" cols="65" rows="10" autofocus placeholder="请填写业务流程备注信息"></textarea>
     </Modal>
   </div>
 </template>
@@ -251,7 +251,6 @@ export default {
           .then(res => {
             this.loadingForm = false;
             if (res.status === 0) {
-              console.log(res);
               this.$refs.renderingFormComp.showForm(res.data);
             } else {
               this.$Message.error("获取业务表单失败");
@@ -332,10 +331,7 @@ export default {
           .setRemarkContent(this.taskId, this.$refs.remarkTextarea.value)
           .then(res => {
             if (res.status === 0) {
-              this.$Modal.success({
-                title: "成功",
-                content: "设置备注信息成功!"
-              });
+              this.$Message.success("设置备注信息成功");
             } else {
               this.$Message.error(res.message);
             }
