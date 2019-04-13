@@ -55,8 +55,7 @@ export default {
   },
 
   /**####################################我的工作模块接口#################################### **/
-  //获取在办工作列表
-  getHanglingWorkList(page, rows, keyword, userName) {
+  //获取在办工作列表 TODO 查询当前用户
     return config.doGetPromise(baseUrl + '/CustomConteoller/getMyWorkListBySearchText', {
       page: page,
       rows: rows,
@@ -65,8 +64,7 @@ export default {
       searchText: 'HanglingWork'
     })
   },
-  //获取办结工作列表
-  getFinishedWorkList(page, rows, keyword, userName) {
+  //获取办结工作列表 TODO 查询当前用户
     return config.doGetPromise(baseUrl + '/CustomConteoller/getMyWorkListBySearchText', {
       page: page,
       rows: rows,
@@ -75,8 +73,7 @@ export default {
       searchText: 'FinishedWork'
     })
   },
-  //获取个人已办理的工作列表
-  getPersonalDoneWorkList(page, rows, keyword, userName) {
+  //获取个人已办理的工作列表 TODO 查询当前用户
     return config.doGetPromise(baseUrl + '/CustomConteoller/getMyWorkListBySearchText', {
       page: page,
       rows: rows,
@@ -119,6 +116,15 @@ export default {
       processDefinitionName: businessDefinition.useProcessName,
       businessFormId: businessDefinition.useFormId,
       businessFormName: businessDefinition.useFormName,
+      creatorId:businessDefinition.creatorId
+    })
+  },
+
+  //设置业务定义中的备注内容
+  setBusinessDefRemark(businessId, remarkContent) {
+    return config.doPostPromise(baseUrl + '/BusinessDefinitionController/setBusinessDefRemark', {
+      businessId,
+      remarkContent
     })
   },
   //获取业务定义列表
@@ -139,6 +145,12 @@ export default {
   getBusinessFormId(processInstanceId) {
     return config.doGetPromise(baseUrl + '/CustomConteoller/getBusinessFormId', {
       processInstanceId
+    })
+  },
+  //根据流程定义Id启动流程，同时绑定Business_Key
+  startProcessDefinition(businessId) {
+    return config.doGetPromise(baseUrl + '/CustomConteoller/startProcessDefinition', {
+      businessId
     })
   }
 }
