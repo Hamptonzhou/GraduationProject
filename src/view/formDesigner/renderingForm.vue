@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Modal v-model="showModal" title="业务表单" fullscreen @on-ok="handleSave">
+    <Modal v-model="showModal" :title="businessFormName" fullscreen @on-ok="handleSave">
       <fm-generate-form ref="generateForm" :data="jsonDataObject">
       </fm-generate-form>
     </Modal>
@@ -14,7 +14,15 @@ export default {
   data() {
     return {
       showModal: false,
-      jsonDataObject: null
+      businessFormName: null,
+      jsonDataObject: {
+        list: [],
+        config: {
+          labelWidth: 100,
+          labelPosition: "top",
+          size: "small"
+        }
+      }
     };
   },
   //   watch: {
@@ -24,11 +32,12 @@ export default {
   //     }
   //   },
   methods: {
-    showForm(businessFormId) {
+    showForm(businessFormId, businessFormNaming) {
       formDesignerAPI
         .getFormDataById(businessFormId)
         .then(res => {
           if (res.status === 0) {
+            this.businessFormName = businessFormNaming || "业务表单";
             this.jsonDataObject = JSON.parse(res.data.formData);
             this.showModal = true;
           } else {
