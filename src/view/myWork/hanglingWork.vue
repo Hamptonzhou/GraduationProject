@@ -283,17 +283,15 @@ export default {
     },
     //接办任务
     claimTask() {
+      this.isloading = true;
       workflowDesignApi
-        // .claimTask(this.taskId, this.userId)
-        .claimTask(this.taskId, "tijs")
+        .claimTask(this.taskId, this.userName)
         .then(res => {
+          this.isloading = false;
           if (res.status === 0) {
-            this.$Modal.success({
-              title: "成功",
-              content: "接办任务成功!"
-            });
+            this.$Message.success("接办任务成功");
           } else {
-            this.$Message.error(res.message);
+            this.$Message.error("接办任务失败");
           }
         })
         .catch(err => {
@@ -302,19 +300,18 @@ export default {
     },
     //退办任务
     unClaimTask() {
+      this.isloading = true;
       if (this.taskType.includes("未接办")) {
         this.$Message.info("所选任务尚未接办，无法退办！");
       } else {
         workflowDesignApi
           .claimTask(this.taskId, null)
           .then(res => {
+            this.isloading = false;
             if (res.status === 0) {
-              this.$Modal.success({
-                title: "成功",
-                content: "退办任务成功!该任务已对其他组元可见。"
-              });
+              this.$Message.info("退办任务成功!该任务已对其他组员可见！");
             } else {
-              this.$Message.error(res.message);
+              this.$Message.error("退办任务失败!");
             }
           })
           .catch(err => {
@@ -324,13 +321,16 @@ export default {
     },
     //确认时，保存备注内容
     confirmRemark() {
+      this.isloading = true;
       if (this.$refs.remarkTextarea.value === "") {
         return;
       } else {
         workflowDesignApi
           .setRemarkContent(this.taskId, this.$refs.remarkTextarea.value)
           .then(res => {
+            this.isloading = false;
             if (res.status === 0) {
+              this.getTableList();
               this.$Message.success("设置备注信息成功");
             } else {
               this.$Message.error(res.message);
