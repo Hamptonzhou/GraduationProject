@@ -1,12 +1,12 @@
 <template>
   <div>
     <!-- 查看流程图模态框 -->
-    <Modal v-model="showImageModal" fullscreen footer-hide title="流程状态">
+    <Modal v-model="showImageModal" fullscreen footer-hide :title="processDefinitionName">
       <center> <img :src='image'></center>
     </Modal>
     <!-- 备注信息模态框 -->
-    <Modal v-model="showDoubleClickModal" title="业务流程备注信息">
-      <textarea ref="remarkTextarea" cols="65" rows="10" autofocus placeholder="无备注信息"></textarea>
+    <Modal v-model="showDoubleClickModal" title="业务流程备注信息" @on-ok="confirmRemark">
+      <textarea ref="remarkTextarea" cols="65" rows="10" autofocus placeholder="请填写业务流程备注信息"></textarea>
     </Modal>
     <!-- 业务表单模态框组件 -->
     <rendering-form ref="renderingFormComp"></rendering-form>
@@ -39,6 +39,7 @@
             <Button @click="handleSave" type="primary" size="large">保 存</Button>
             <Divider type="vertical" />
             <Button @click="handleReset" type="primary" size="large">重 置</Button>
+            <Button style="margin-left: 8px" shape="circle" icon="md-refresh" @click="getTableList"></Button>
           </FormItem>
         </i-col>
       </Row>
@@ -70,11 +71,6 @@ export default {
   data() {
     return {
       columns: [
-        {
-          type: "selection",
-          width: 70,
-          align: "center"
-        },
         {
           type: "index",
           width: 70,
@@ -117,9 +113,7 @@ export default {
                   },
                   on: {
                     click: () => {
-                      this.startProcessDefinition(
-                        params.row.processDefinitionId
-                      );
+                      this.startProcessDefinition(params.row.id);
                     }
                   }
                 },
@@ -154,6 +148,7 @@ export default {
       ProcessTree: [],
       FormTree: [],
       businessDefinitionForm: {
+        creatorId: "",
         businessTitle: "",
         useProcessId: null,
         useProcessName: "",
@@ -197,12 +192,16 @@ export default {
       loadingForm: false,
       image: null,
       processDefinitionId: null,
-      businessFormId: null
+      businessFormId: null,
+      processDefinitionName: null,
+      businessFormNaming: null,
+      currentRowData: ""
     };
   },
   computed: {
     ...mapState({
-      userName: state => state.user.userName
+      userName: state => state.user.userName,
+      userId: state => state.user.userId
     })
   },
   mounted() {
@@ -283,9 +282,11 @@ export default {
     handleSave() {
       this.$refs["businessDefinitionForm"].validate(valid => {
         if (valid) {
+          this.businessDefinitionForm.creatorId = this.userId;
           workflowDesignApi
             .saveOrUpdateBusinessDefinition(this.businessDefinitionForm)
             .then(res => {
+              console.log(this.businessDefinitionForm);
               if (res.status === 0) {
                 this.$Message.success("新增业务定义成功！");
                 this.handleReset();
@@ -331,7 +332,8 @@ export default {
         .getBusinessDefinitionList(
           this.currentPage,
           this.pageSize,
-          this.keyword
+          this.keyword,
+          this.userId
         )
         .then(res => {
           this.isloading = false;
@@ -352,9 +354,13 @@ export default {
       //获取流程实例ID
       this.processDefinitionId = currentRow.processDefinitionId;
       this.businessFormId = currentRow.businessFormId;
+      //用于流程模态框、表单模态框的标题
+      this.processDefinitionName = currentRow.processDefinitionName;
+      this.businessFormNaming = currentRow.businessFormName;
     },
     //双击时，显示详细信息
     getDoubleClick(currentRow) {
+      this.currentRowData = currentRow;
       this.showDoubleClickModal = true;
       this.$refs.remarkTextarea.value = currentRow.remarkContent;
     },
@@ -378,10 +384,10 @@ export default {
         workflowDesignApi
           .getProcessDefinitionImage(this.processDefinitionId)
           .then(res => {
+            this.loadingImage = false;
             if (res.status === 0) {
               //操作返回的base64的图片数据，显示在页面上
               this.image = "data:image/png;base64," + res.data.image;
-              this.loadingImage = false;
               this.showImageModal = true;
             } else {
               this.$Message.error("无法获取流程图！");
@@ -400,15 +406,57 @@ export default {
         this.$Message.info("请选择一项工作");
       } else {
         this.loadingForm = false;
-        this.$refs.renderingFormComp.showForm(this.businessFormId);
+        this.$refs.renderingFormComp.showForm(
+          this.businessFormId,
+          this.businessFormNaming
+        );
+      }
+    },
+    //保存备注信息到业务定义实体中
+    confirmRemark() {
+      if (this.$refs.remarkTextarea.value === "") {
+        return;
+      } else {
+        workflowDesignApi
+          .setBusinessDefRemark(
+            this.currentRowData.id,
+            this.$refs.remarkTextarea.value
+          )
+          .then(res => {
+            if (res.status === 0) {
+              this.$Message.success("设置备注成功！");
+              this.getTableList();
+            } else {
+              this.$Message.error("设置备注失败！");
+            }
+          })
+          .catch(err => {
+            this.$Message.error("catch-请求服务器失败!");
+          });
       }
     },
     //启动流程
-    startProcessDefinition(processDefinitionId) {
-      this.$Message.info(
-        "根据流程定义id启动流程，启动时设置流程中的业务key字段为业务定义id=====" +
-          processDefinitionId
-      );
+    startProcessDefinition(businessId) {
+      this.isloading = true;
+      if (businessId === null) {
+        this.isloading = false;
+        this.$Message.info("请选择一项工作");
+      } else {
+        workflowDesignApi
+          .startProcessDefinition(businessId)
+          .then(res => {
+            this.isloading = false;
+            if (res.status === 0) {
+              this.$Message.success("启动流程成功");
+              this.getTableList();
+            } else {
+              this.$Message.error("启动流程失败");
+            }
+          })
+          .catch(err => {
+            this.$Message.error("catch-请求服务器异常");
+          });
+      }
     }
   }
 };
