@@ -29,7 +29,7 @@
           </div>
           <div style="text-align: left;color:#20a0ff;font-size: 13px;margin-top: 13px;display: flex;align-items: center">
             <span>用户状态：</span>
-            <i-switch v-model="user.enable" size="large" true-value="1" false-value="0" @on-change="enableChange(user.userId,index)">
+            <i-switch v-model="user.enable" size="large"  @on-change="enableChange(user.userId,index)">
               <span slot="open">启用</span>
               <span slot="close">禁用</span>
             </i-switch>
