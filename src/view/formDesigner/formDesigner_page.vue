@@ -21,7 +21,7 @@
           <Option v-for="(item,index) in selectList" :key="index" :value="item.id">{{item.formName}}</Option>
         </Select>
         <Button type="primary" ghost style="float:left;" @click="viewFormData(selectedNodeId)">编辑表单</Button>
-        <Button type="primary" ghost style="float:left;" @click="check">测试渲染</Button>
+        <Button type="primary" ghost style="float:left;" @click="clearContainer">清空容器</Button>
       </template>
     </fm-making-form>
 
@@ -62,11 +62,8 @@ export default {
     this.fetchAllFormData();
   },
   methods: {
-    check() {
-      this.jsonData = {
-        list: [],
-        config: {}
-      };
+    clearContainer() {
+      this.$refs.makingForm.setJSON(this.jsonData);
     },
     //获取所有表单数据
     fetchAllFormData() {
