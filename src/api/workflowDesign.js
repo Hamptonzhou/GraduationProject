@@ -56,29 +56,32 @@ export default {
 
   /**####################################我的工作模块接口#################################### **/
   //获取在办工作列表 TODO 查询当前用户
+  getHanglingWorkList(page, rows, keyword, userId) {
     return config.doGetPromise(baseUrl + '/CustomConteoller/getMyWorkListBySearchText', {
       page: page,
       rows: rows,
       keyword: keyword,
-      queryId: 'tijs',
+      queryId: userId,
       searchText: 'HanglingWork'
     })
   },
   //获取办结工作列表 TODO 查询当前用户
+  getFinishedWorkList(page, rows, keyword, userId) {
     return config.doGetPromise(baseUrl + '/CustomConteoller/getMyWorkListBySearchText', {
       page: page,
       rows: rows,
       keyword: keyword,
-      queryId: 'tijs',
+      queryId: userId,
       searchText: 'FinishedWork'
     })
   },
   //获取个人已办理的工作列表 TODO 查询当前用户
+  getPersonalDoneWorkList(page, rows, keyword, userId) {
     return config.doGetPromise(baseUrl + '/CustomConteoller/getMyWorkListBySearchText', {
       page: page,
       rows: rows,
       keyword: keyword,
-      queryId: 'tijs',
+      queryId: userId,
       searchText: 'PersonalDoneWork'
     })
   },
@@ -127,12 +130,14 @@ export default {
       remarkContent
     })
   },
-  //获取业务定义列表
-  getBusinessDefinitionList(page, rows, keyword, userName) {
+
+  //获取业务定义列表 TODO 查询当前用户
+  getBusinessDefinitionList(page, rows, keyword, userId) {
     return config.doGetPromise(baseUrl + '/BusinessDefinitionController/getBusinessDefinitionList', {
       page: page,
       rows: rows,
       keyword: keyword,
+      queryId: userId
     })
   },
   //删除业务定义
