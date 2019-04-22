@@ -1,12 +1,15 @@
 <template>
   <div>
-    <Button type="primary" size="large" @click="getWorkflowDesignPage">调出流程图设计页面</Button>
+    <!-- <Button type="primary" size="large" @click="getWorkflowDesignPage">调出流程图设计页面</Button> -->
   </div>
 </template>
 
 <script>
 import workflowDesignApi from "@/api/workflowDesign.js";
 export default {
+  mounted() {
+    this.getWorkflowDesignPage();
+  },
   methods: {
     //发出请求画图页面的请求
     getWorkflowDesignPage() {

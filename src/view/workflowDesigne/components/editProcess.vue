@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Button type="primary" size="large" @click="showModelEditPage">调出流程图编辑页面</Button>
+    <!-- <Button type="primary" size="large" @click="showModelEditPage">调出流程图编辑页面</Button> -->
   </div>
 </template>
 
@@ -8,6 +8,9 @@
 import workflowDesignApi from "@/api/workflowDesign.js";
 export default {
   props: ["selectedNodeId", "selectedNodeTitle"],
+  mounted() {
+    this.showModelEditPage();
+  },
   methods: {
     showModelEditPage() {
       workflowDesignApi
