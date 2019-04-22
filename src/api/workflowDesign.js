@@ -157,5 +157,9 @@ export default {
     return config.doGetPromise(baseUrl + '/CustomConteoller/startProcessDefinition', {
       businessId
     })
-  }
+  },
+  //获取可用流程数量
+  getUseableProcessCount() {
+    return config.doGetPromise(baseUrl + '/CustomConteoller/getProcessDefinitionCount')
+  },
 }
